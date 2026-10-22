@@ -23,7 +23,10 @@ export function currentStep(state: WizardState) {
  * otherwise go back to the first incomplete one.
  */
 export function firstReachableStep(state: WizardState): string {
-  const { list, index } = currentStep(state);
-  const blocked = list.slice(0, index).find((s) => !s.complete(state));
-  return blocked?.id ?? list[index].id;
+  const list = visibleSteps(state);
+  const index = list.findIndex((s) => s.id === state.step);
+  // Unknown step (e.g. saved by an older version): resume at the first incomplete one.
+  const end = index === -1 ? list.length - 1 : index;
+  const blocked = list.slice(0, end).find((s) => !s.complete(state));
+  return blocked?.id ?? list[end].id;
 }

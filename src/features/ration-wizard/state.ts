@@ -1,13 +1,14 @@
-import type {
-  Activity,
-  AgeGroup,
-  BodyCondition,
-  Diet,
-  DurationChoice,
-  Gender,
-  Pet,
-  Species,
-  Supplement,
+import {
+  calcioIncluded,
+  type Activity,
+  type AgeGroup,
+  type BodyCondition,
+  type Diet,
+  type DurationChoice,
+  type Gender,
+  type Pet,
+  type Species,
+  type Supplement,
 } from "@/features/ration";
 
 /** A pet while the form is being filled: every answer can still be empty. */
@@ -97,6 +98,20 @@ export function parseWeight(input: string): number | null {
   return value;
 }
 
+export const CUSTOM_DAYS_MAX = 90;
+
+/** Whole days between 1 and 90; null otherwise. */
+export function parseCustomDays(input: string): number | null {
+  if (!/^\d+$/.test(input.trim())) return null;
+  const days = Number(input.trim());
+  return days >= 1 && days <= CUSTOM_DAYS_MAX ? days : null;
+}
+
+/** Phone: digits, spaces and hyphens only (same rule as the old site). */
+export function sanitizePhone(input: string): string {
+  return input.replace(/[^0-9-\s]/g, "");
+}
+
 /** Digits are not allowed in names (same rule as the old site). */
 export function sanitizeName(input: string): string {
   return input.replace(/\d/g, "");
@@ -120,6 +135,11 @@ export function wizardReducer(state: WizardState, action: WizardAction): WizardS
           const next = { ...p, ...action.patch };
           // Breeds depend on the species.
           if (action.patch.species && action.patch.species !== p.species) next.breed = "";
+          // Calcio comes with natural diets and is not offered with commercial food.
+          if (action.patch.diet) {
+            const rest = next.supplements.filter((s) => s !== "calcio");
+            next.supplements = calcioIncluded({ diet: action.patch.diet }) ? [...rest, "calcio"] : rest;
+          }
           return next;
         }),
       };

@@ -58,6 +58,11 @@ describe("flow", () => {
   });
 });
 
+it("an unknown saved step resumes at the first incomplete one", () => {
+  const s = run([{ type: "setMultiple", multiple: false }, { type: "goTo", step: "pending", direction: 1 }]);
+  expect(firstReachableStep(s)).toBe("species");
+});
+
 describe("persistence", () => {
   it("ignores missing or broken data", () => {
     expect(loadState({ getItem: () => null })).toBeNull();

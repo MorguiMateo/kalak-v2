@@ -82,7 +82,7 @@ Estructura:
   - Guardar el progreso en `sessionStorage`.
 - Listo cuando: los pasos 0-7 funcionan en el preview, en móvil y desktop.
 
-### [ ] Fase 5: Calculadora UI, parte 2 (pasos 8-14, resumen y envío)
+### [x] Fase 5: Calculadora UI, parte 2 (pasos 8-14, resumen y envío)
 - Leer: `calcula-racion/page.tsx` líneas 1720-2922.
 - Hacer: los pasos restantes (dieta, suplementos, duración, contacto y "¿ya pediste antes?"), el resumen y el envío a WhatsApp con `order-message`.
 - Listo cuando: un recorrido completo con 1 y 2 mascotas genera la URL `wa.me` correcta.
@@ -176,7 +176,7 @@ Estructura:
 
 ### Fase 4 (2026-10-22)
 - `/calcula-racion` → `features/ration-wizard/Wizard.tsx` (cliente). Estado con `useReducer` en `state.ts` (`WizardState`, `PetDraft`, acciones `setMultiple | addPet | removePet | updatePet | set | goTo | hydrate | reset`, `toPet`, `parseWeight`, `sanitizeName`). Tests en `wizard.test.ts`.
-- Pasos en `steps/index.ts` (array de `StepDef`: `id`, `visible?`, `complete`, `Component`), un componente por paso en `steps/`: `count`, `pets` (solo con varias mascotas), `species`, `gender`, `name`, `breed`, `age` (edad + esterilizado), `weight`, `body`, y `pending` (placeholder: **borrarlo en la fase 5** y agregar los pasos nuevos antes de él). `navigation.ts` calcula pasos visibles, anterior/siguiente y `firstReachableStep`.
+- Pasos en `steps/index.ts` (array de `StepDef`: `id`, `visible?`, `complete`, `Component`), un componente por paso en `steps/`: `count`, `pets` (solo con varias mascotas), `species`, `gender`, `name`, `breed`, `age` (edad + esterilizado), `weight`, `body`, (el placeholder `pending` ya se borró en la fase 5). `navigation.ts` calcula pasos visibles, anterior/siguiente y `firstReachableStep`.
 - Varias mascotas: cada paso muestra una pregunta por mascota (`PetStack`), "Continuar" se habilita cuando todas respondieron.
 - UI: `ui/ChoiceCards` (tarjetas con imagen, radios nativos), `ui/ChoicePills` (opciones de texto), `ui/BreedSelect` (Radix Select), `ui/Question` (`QuestionGroup` con fieldset/legend flotado, `QuestionField` con label), `ui/Progress` ("Paso N de T" + barra + nombres). `components/ui/PhotoBanner`.
 - Transición: salida 260ms (fade + 40px hacia atrás) y entrada `animate-step-in` desde el lado de avance; sin animación con reduced-motion. Al cambiar de paso se enfoca el paso y se hace scroll si el wizard quedó arriba. Enter en un input = Continuar.
@@ -187,3 +187,12 @@ Estructura:
 ### Para la Fase 5
 - Agregar en `steps/` los pasos `activity` (imágenes `pet-activity-*`/`cat-activity-*`, textos ya en el mockup), `duration`, `diet` (al continuar, aplicar `calcioIncluded`), `supplements`, `contact`, resumen y "¿ya pediste antes?". Los campos ya existen en `WizardState` (`duration`, `customDays`, `customerName`, `customerPhone`, `orderedBefore`) y en `PetDraft` (`activity`, `diet`, `supplements`).
 - Envío: `whatsappUrl(orderMessage({ pets: state.pets.map(toPet), duration, customDays, customer }))`.
+
+### Fase 5 (2026-10-22)
+- Pasos nuevos: `activity`, `duration` (1 semana / 1 quincena / 1 mes / Personalizado 1–90 días), `diet` (tarjetas de texto: las imágenes `diet-*.webp` de la web vieja no existían), `supplements` (checkboxes; calcio bloqueado: marcado en dieta cruda/cocida, deshabilitado con comercial), `contact` (nombre + teléfono, mínimo 6 dígitos), `summary`. Total: 14 pasos (15 con varias mascotas).
+- El calcio se ajusta en el reducer al elegir la dieta (`updatePet` con `diet`), igual que el paso 10 viejo.
+- Resumen: tarjeta por mascota (g/día, bolsas, suplementos), "Detalle del pedido" con totales y precio (o "Consultar"/"A consultar" mientras los precios estén en 0) y botón "Hacer pedido" = link `wa.me` (`target=_blank`, sin `window.open`). "Editar datos de contacto" vuelve al paso de contacto.
+- `flow.test.ts`: recorre el wizard completo con 1 y 2 mascotas y compara la URL `wa.me` con la de la web vieja.
+- Un paso guardado que ya no existe retoma en el primer paso incompleto.
+- **No migrado**: el paso viejo "¿Ha realizado un pedido antes?" (paso 14) era inalcanzable (ningún botón llevaba ahí). Si se quiere, agregarlo como primer paso.
+- Corregido respecto a la web vieja: el resumen viejo usaba 14 días para la quincena y el mensaje 15; ahora ambos usan 15.

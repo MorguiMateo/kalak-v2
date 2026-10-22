@@ -3,7 +3,7 @@ import { resolveDuration } from "./portion";
 import { orderPrice, type PriceList } from "./pricing";
 import type { BodyCondition, Activity, Customer, Diet, DurationChoice, Pet } from "./types";
 
-const DIET_TEXT: Record<Diet, string> = {
+export const DIET_TEXT: Record<Diet, string> = {
   raw: "Natural cruda",
   cooked: "Natural cocida",
   mixed: "Mixta (60% natural cocida + 40% comercial)",
