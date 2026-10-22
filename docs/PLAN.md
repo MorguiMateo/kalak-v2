@@ -92,7 +92,7 @@ Estructura:
 - Hacer: `content/home.ts` con los textos literales y la Home nueva (hero, secciones y FAQ con accordion).
 - Listo cuando: no falta ningún texto ni imagen respecto a la Home vieja.
 
-### [ ] Fase 7: Perros, Gatos y Dieta Kalak
+### [x] Fase 7: Perros, Gatos y Dieta Kalak
 - Leer: `perros/`, `gatos/` y `dieta-kalak/page.tsx`.
 - Hacer: `content/*.ts` y las tres páginas como Server Components, reutilizando Section y Card.
 
@@ -203,3 +203,9 @@ Estructura:
 - Secciones en `components/home/`: `Hero` (art direction con `getImageProps` + `<picture>`: `background` desktop / `fondoOlga1` móvil; `fetchPriority=high`), `Statement`, `Benefits` (bento), `Ingredients` (carrusel scroll-snap + `CarouselArrows` cliente), `Faq` (foto sticky + `components/ui/Accordion` Radix con animación por `grid-template-rows`), `FinalCta`.
 - Header transparente sobre el hero (`OVERLAY_ROUTES = ["/"]`).
 - Cambio de jerarquía: el H1 ahora es "Comida real para mascotas" (antes era H2 y el H1 era el subtítulo). Mismos textos.
+
+### Fase 7 (2026-10-22)
+- Contenido literal en `content/species.ts` (`dogs`, `cats`) y `content/dieta-kalak.ts`. Server Components en `app/perros`, `app/gatos`, `app/dieta-kalak`.
+- Componentes de página en `components/page/`: `SpeciesPage` (layout compartido de perros/gatos), `FeatureGrid` (tarjetas título+texto, opción `numbered`), `IngredientCards` (foto + %), `CtaPhoto` (cierre con foto; `FinalCta` de la Home lo usa), `Highlight` (palabra clave en `<em>`).
+- Perros/Gatos usan `PhotoBanner` con `perroComiendo`/`gatoComiendo` (la página vieja no tenía foto arriba) y terminan con el CTA de la Home.
+- Dieta Kalak: las pestañas "Dietas Naturales / Dieta Comercial Suplementada" pasan a ser dos bloques seguidos (mismo texto, sin tabs: Radix solo accordion/select). Los grupos "Beneficios / Características / Suplementación" son acordeones.
