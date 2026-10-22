@@ -75,7 +75,7 @@ Estructura:
 - Bug del calcio: depende de un estado global y no de la mascota. Te lo consulto antes de corregirlo.
 - Listo cuando: `pnpm test` pasa en verde.
 
-### [ ] Fase 4: Calculadora UI, parte 1 (pasos 0-7)
+### [x] Fase 4: Calculadora UI, parte 1 (pasos 0-7)
 - Leer: `calcula-racion/page.tsx` líneas 60-280 (navegación) y 960-1720 (pasos 0-7).
 - Hacer: un wizard con `useReducer` y los pasos en un array de config, un componente por paso.
   - Agregar la barra de progreso animada, la transición entre pasos, la validación por paso y el soporte para varias mascotas.
@@ -173,3 +173,17 @@ Estructura:
 ### Para la Fase 4
 - El wizard guarda strings en los inputs y convierte a `Pet` (peso con `parseFloat`) al usar la lógica.
 - Al elegir dieta (paso 10 viejo): agregar `calcio` si `calcioIncluded(pet)` y quitarlo si no (ver `afterDietStep` en `golden.test.ts`).
+
+### Fase 4 (2026-10-22)
+- `/calcula-racion` → `features/ration-wizard/Wizard.tsx` (cliente). Estado con `useReducer` en `state.ts` (`WizardState`, `PetDraft`, acciones `setMultiple | addPet | removePet | updatePet | set | goTo | hydrate | reset`, `toPet`, `parseWeight`, `sanitizeName`). Tests en `wizard.test.ts`.
+- Pasos en `steps/index.ts` (array de `StepDef`: `id`, `visible?`, `complete`, `Component`), un componente por paso en `steps/`: `count`, `pets` (solo con varias mascotas), `species`, `gender`, `name`, `breed`, `age` (edad + esterilizado), `weight`, `body`, y `pending` (placeholder: **borrarlo en la fase 5** y agregar los pasos nuevos antes de él). `navigation.ts` calcula pasos visibles, anterior/siguiente y `firstReachableStep`.
+- Varias mascotas: cada paso muestra una pregunta por mascota (`PetStack`), "Continuar" se habilita cuando todas respondieron.
+- UI: `ui/ChoiceCards` (tarjetas con imagen, radios nativos), `ui/ChoicePills` (opciones de texto), `ui/BreedSelect` (Radix Select), `ui/Question` (`QuestionGroup` con fieldset/legend flotado, `QuestionField` con label), `ui/Progress` ("Paso N de T" + barra + nombres). `components/ui/PhotoBanner`.
+- Transición: salida 260ms (fade + 40px hacia atrás) y entrada `animate-step-in` desde el lado de avance; sin animación con reduced-motion. Al cambiar de paso se enfoca el paso y se hace scroll si el wizard quedó arriba. Enter en un input = Continuar.
+- Progreso en `sessionStorage` (`kalak:ration-wizard:v1`); al restaurar vuelve al primer paso incompleto. "Empezar de nuevo" borra todo.
+- Razas: `config/breeds.ts` ahora tiene la lista que mostraba de verdad el selector viejo (`components/shared/breed-selector.tsx`: 62 perros, 12 gatos); la de `Kalak/src/config/breeds.ts` no se usaba.
+- Cambios menores respecto a la web vieja: el nombre ya no se fuerza a mayúsculas (el mensaje igual lo pasa a mayúsculas); el peso acepta coma y valida 0,1–60 kg (antes "0" pasaba); con una sola mascota no se antepone "Mascota 1:" a las preguntas; con varias se antepone también en el paso del nombre; el paso de especie usa las imágenes `pet-normal`/`cat-normal`.
+
+### Para la Fase 5
+- Agregar en `steps/` los pasos `activity` (imágenes `pet-activity-*`/`cat-activity-*`, textos ya en el mockup), `duration`, `diet` (al continuar, aplicar `calcioIncluded`), `supplements`, `contact`, resumen y "¿ya pediste antes?". Los campos ya existen en `WizardState` (`duration`, `customDays`, `customerName`, `customerPhone`, `orderedBefore`) y en `PetDraft` (`activity`, `diet`, `supplements`).
+- Envío: `whatsappUrl(orderMessage({ pets: state.pets.map(toPet), duration, customDays, customer }))`.
