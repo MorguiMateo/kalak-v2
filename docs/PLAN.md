@@ -87,7 +87,7 @@ Estructura:
 - Hacer: los pasos restantes (dieta, suplementos, duración, contacto y "¿ya pediste antes?"), el resumen y el envío a WhatsApp con `order-message`.
 - Listo cuando: un recorrido completo con 1 y 2 mascotas genera la URL `wa.me` correcta.
 
-### [ ] Fase 6: Home
+### [x] Fase 6: Home
 - Leer: `Kalak/src/app/page.tsx`.
 - Hacer: `content/home.ts` con los textos literales y la Home nueva (hero, secciones y FAQ con accordion).
 - Listo cuando: no falta ningún texto ni imagen respecto a la Home vieja.
@@ -196,3 +196,10 @@ Estructura:
 - Un paso guardado que ya no existe retoma en el primer paso incompleto.
 - **No migrado**: el paso viejo "¿Ha realizado un pedido antes?" (paso 14) era inalcanzable (ningún botón llevaba ahí). Si se quiere, agregarlo como primer paso.
 - Corregido respecto a la web vieja: el resumen viejo usaba 14 días para la quincena y el mensaje 15; ahora ambos usan 15.
+
+### Fase 6 (2026-10-22)
+- `src/content/home.ts` con todos los textos literales de la Home vieja (hero, statement, 4 beneficios, 7 ingredientes, 5 FAQ completas, CTA). Texto enriquecido con `content/rich.ts` (`Inline`: string | `{b}` | `{accent}`; `Block`: `{p}` | `{ul}` | `{ol}`) y `components/ui/RichText.tsx`.
+- Fotos por nombre desde `lib/images.ts` (imports estáticos → `width/height` y blur automáticos). Agregar ahí las fotos nuevas.
+- Secciones en `components/home/`: `Hero` (art direction con `getImageProps` + `<picture>`: `background` desktop / `fondoOlga1` móvil; `fetchPriority=high`), `Statement`, `Benefits` (bento), `Ingredients` (carrusel scroll-snap + `CarouselArrows` cliente), `Faq` (foto sticky + `components/ui/Accordion` Radix con animación por `grid-template-rows`), `FinalCta`.
+- Header transparente sobre el hero (`OVERLAY_ROUTES = ["/"]`).
+- Cambio de jerarquía: el H1 ahora es "Comida real para mascotas" (antes era H2 y el H1 era el subtítulo). Mismos textos.

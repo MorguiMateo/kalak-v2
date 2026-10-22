@@ -11,9 +11,8 @@ import { cn } from "@/lib/cn";
 
 /**
  * Routes whose first block is a full-bleed photo: the header starts transparent over it.
- * TODO(fase 6): add "/" once the Home hero exists.
  */
-const OVERLAY_ROUTES: readonly string[] = [];
+const OVERLAY_ROUTES: readonly string[] = ["/"];
 
 export function Header() {
   const pathname = usePathname();
