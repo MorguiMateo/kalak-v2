@@ -8,7 +8,7 @@ Para empezar una fase: leer este archivo y `docs/PLAN.md`, y de la web vieja (`~
 
 ## Comandos
 - `pnpm dev` · `pnpm build` · `pnpm lint` · `pnpm typecheck` (`next typegen && tsc --noEmit`)
-- `pnpm test` (Vitest, desde la fase 3)
+- `pnpm test` (Vitest; tests en `src/**/*.test.ts`)
 - Cierre de fase: `pnpm lint && pnpm typecheck && pnpm build` en verde, actualizar `docs/PLAN.md`, commit y push.
 
 ## Stack
@@ -29,6 +29,7 @@ Para empezar una fase: leer este archivo y `docs/PLAN.md`, y de la web vieja (`~
 ## Convenciones
 - Server Components por defecto; `"use client"` solo donde hay estado o eventos.
 - Datos de contacto y links solo desde `config/site.ts`; URLs de WhatsApp solo con `lib/whatsapp.ts`.
+- Lógica de la calculadora solo en `features/ration` (pura, con golden tests contra `__fixtures__/legacy.ts`; no editar el fixture).
 - Precios solo desde `config/prices.ts`. `0` = sin cargar → `formatPrice` muestra "Consultar" (`TODO(precios)`).
 - Textos de la web vieja se copian literales a `src/content/*`.
 - Código e identificadores en inglés; textos de UI en español rioplatense.

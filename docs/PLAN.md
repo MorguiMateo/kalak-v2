@@ -68,7 +68,7 @@ Estructura:
 - Repo privado `MorguiMateo/kalak-v2` y proyecto Vercel `kalak-v2` para staging. **Te pido confirmación antes de crearlos.**
 - Listo cuando: el build pasa y hay un preview con el layout y la Home vacía.
 
-### [ ] Fase 3: Lógica de la calculadora con tests
+### [x] Fase 3: Lógica de la calculadora con tests
 - Leer: `Kalak/src/app/calcula-racion/page.tsx`, solo las líneas 34-50 (tipos) y 300-620 y 757-930 (fórmulas y mensaje). También `config/breeds.ts`.
 - Hacer: funciones puras en `features/ration/`: `portion`, `supplements`, `pricing` y `order-message`, con las mismas fórmulas.
 - Golden tests: una copia literal de las funciones viejas como fixture. Una matriz de casos tiene que dar los mismos gramos y el mismo mensaje de WhatsApp.
@@ -160,3 +160,16 @@ Estructura:
 ### Para la Fase 3
 - Leer solo lo que indica la fase (líneas de `calcula-racion/page.tsx` y `config/breeds.ts`). Instalar Vitest (`pnpm add -D vitest`) y agregar el script `test`.
 - Precios: usar `prices.formula.dog/cat` y `prices.supplements.*` de `config/prices.ts` (hoy en 0); el golden test debe inyectar los precios viejos (3800/4300/2300/1000/1100/1300) para comparar.
+
+### Fase 3 (2026-10-22)
+- `src/features/ration/`: `types.ts`, `portion.ts` (`dailyPercentage`, `dailyKalakGrams`, `resolveDuration`, `kalakBags`, `AGE_PERCENTAGE`), `supplements.ts` (`caldoDosage`, `curcumaDosage`, `calcioPots`, `calcioIncluded`), `order.ts` (`petOrder`, `orderTotals`), `pricing.ts` (`orderPrice`, lee `config/prices.ts`), `order-message.ts` (`orderMessage`). Todo se importa desde `@/features/ration`. URL: `whatsappUrl(orderMessage(...))`.
+- Tipos nuevos: `Pet.weight` es número (kg); suplementos son ids `caldo | curcuma | calcio` (antes "Caldo", "Curcuma activada", "Calcio"); el porcentaje por edad se deriva de `age` (ya no se guarda en la mascota).
+- Golden tests: `__fixtures__/legacy.ts` es copia literal de las funciones viejas (sin `console.log`, estado → parámetros). `golden.test.ts` compara gramos, dosis, mensaje y URL `wa.me` en una matriz de 2.496 mascotas, todas las duraciones, y pedidos de 2 y 3 mascotas, con los precios viejos inyectados. Verificado con mutaciones que los tests fallan ante cambios.
+- **Bug del calcio**: la versión vieja leía `commercialFoodPercentage`, un estado global que nunca cambiaba (siempre 40). Ahora depende de la dieta de cada mascota (`COMMERCIAL_SHARE`). El resultado es idéntico (1 pote solo en dieta cruda/cocida), así que no cambia ningún pedido.
+- Precios en 0: `orderPrice(...).complete === false` y el mensaje dice `*PRECIO TOTAL: a consultar*` sin líneas en ARS. Con precios cargados el formato es el viejo.
+- Rarezas que se mantienen a propósito (consultar antes de cambiar): el nivel de actividad no afecta la ración; caldo y cúrcuma siempre calculan potes para 30 días y calcio es 1 pote aunque la duración sea 1 semana o 45 días; `customDays` se usa tal cual en el texto ("45 días").
+- `config/breeds.ts` copiado (`breedsBySpecies`). Vitest 5 (`pnpm test`, config en `vitest.config.mts`).
+
+### Para la Fase 4
+- El wizard guarda strings en los inputs y convierte a `Pet` (peso con `parseFloat`) al usar la lógica.
+- Al elegir dieta (paso 10 viejo): agregar `calcio` si `calcioIncluded(pet)` y quitarlo si no (ver `afterDietStep` en `golden.test.ts`).
