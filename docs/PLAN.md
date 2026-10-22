@@ -58,7 +58,7 @@ Estructura:
 - Entregable: el mockup para que lo apruebes, y `kalak-v2/docs/design.md` con los tokens (colores, tipografía, espaciado, radios y animaciones).
 - Listo cuando: apruebas el diseño.
 
-### [~] Fase 2: Base del proyecto, repo y staging
+### [x] Fase 2: Base del proyecto, repo y staging
 - Hacer: `create-next-app` en `kalak-v2` con Tailwind v4 y los tokens de `design.md`, fuentes y layout.
   - Componentes: Header (se compacta al hacer scroll), menú móvil, Footer, Guarda y botón flotante de WhatsApp.
   - Primitivas UI: Button, Card, Section y Reveal.
@@ -155,3 +155,8 @@ Estructura:
 - `config/site.ts` (WhatsApp, email, Instagram, puntos de retiro con links a Maps, `mainNav`, `ctaLinks`), `config/prices.ts` (todo en `0`, `formatPrice` → "Consultar"; claves: `formula.dog/cat`, `supplements.caldo/curcuma/calcio/colageno`), `lib/whatsapp.ts`.
 - Imágenes en `public/images`: las de `design.md` + `cat-*.webp`, `guardabeige.webp` (reducida a 60px de alto), `favicon.webp`. `logofooter.png` → `logo-zorro.webp`.
 - Home = placeholder (`src/app/page.tsx`) y `not-found.tsx` con estilo de marca. El resto de rutas da 404 hasta su fase.
+- Repo privado `MorguiMateo/kalak-v2` (rama `main`) y proyecto Vercel `kalak-v2` (scope `morguimateos-projects`) conectado al repo: cada push despliega.
+
+### Para la Fase 3
+- Leer solo lo que indica la fase (líneas de `calcula-racion/page.tsx` y `config/breeds.ts`). Instalar Vitest (`pnpm add -D vitest`) y agregar el script `test`.
+- Precios: usar `prices.formula.dog/cat` y `prices.supplements.*` de `config/prices.ts` (hoy en 0); el golden test debe inyectar los precios viejos (3800/4300/2300/1000/1100/1300) para comparar.
