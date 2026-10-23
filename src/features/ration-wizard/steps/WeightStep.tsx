@@ -16,7 +16,7 @@ export function WeightStep({ state, dispatch }: StepProps) {
             title={`¿Cuál es el peso de ${petLabel(pet, i)}?`}
             hint={
               <details className="group">
-                <summary className="cursor-pointer text-[15px] font-medium text-navy underline decoration-line underline-offset-4">
+                <summary className="cursor-pointer text-[15px] font-medium text-charcoal underline decoration-line underline-offset-4">
                   Cómo pesar a tu mascota
                 </summary>
                 <ul className="mt-2 list-disc pl-5 text-[15px]">

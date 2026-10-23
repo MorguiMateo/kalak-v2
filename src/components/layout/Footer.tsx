@@ -23,7 +23,7 @@ async function CopyrightYear() {
 
 export function Footer() {
   return (
-    <footer className="mt-gap bg-navy pt-16 pb-7 text-[15px] text-white/80 [&_a]:transition-colors [&_a:hover]:text-white">
+    <footer className="mt-gap bg-charcoal pt-16 pb-7 text-[15px] text-white/80 [&_a]:transition-colors [&_a:hover]:text-white">
       <div className="container-site">
         <div className="grid grid-cols-2 gap-8 lg:grid-cols-[1.2fr_1fr_1fr_1fr]">
           <div className="col-span-2 lg:col-span-1">

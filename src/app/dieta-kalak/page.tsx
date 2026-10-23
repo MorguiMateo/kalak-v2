@@ -73,7 +73,7 @@ export default function DietaKalakPage() {
                 {"features" in item &&
                   item.features.map((f) => (
                     <div key={f.title}>
-                      <h4 className="font-semibold text-navy">{f.title}</h4>
+                      <h4 className="font-semibold text-charcoal">{f.title}</h4>
                       <p>{f.text}</p>
                     </div>
                   ))}
@@ -87,7 +87,7 @@ export default function DietaKalakPage() {
         {c.species.map((s, i) => (
           <Reveal as="article" key={s.href} variant="zoom" index={i} className="group on-dark relative flex min-h-110 items-end overflow-hidden rounded-tile text-white">
             <Image src={images[s.image]} alt={s.alt} fill sizes="(max-width: 960px) 100vw, 50vw" className="object-cover transition-transform duration-1400 group-hover:scale-[1.06]" />
-            <div aria-hidden className="absolute inset-0 bg-linear-to-t from-[rgb(16_30_40/.8)] to-transparent to-70%" />
+            <div aria-hidden className="absolute inset-0 bg-linear-to-t from-[rgb(32_34_29/.8)] to-transparent to-70%" />
             <div className="relative p-6 lg:p-10">
               <h2 className="text-[clamp(28px,3vw,40px)]">{s.title}</h2>
               <p className="mt-3 max-w-[46ch] text-white/85">{s.text}</p>
@@ -100,7 +100,7 @@ export default function DietaKalakPage() {
       </section>
 
       <Section eyebrow={c.options.subtitle} title={<Highlight text={c.options.title} word="Kalak" />}>
-        <p className="mb-10 max-w-3xl font-display text-2xl leading-snug text-orange-600 italic">{c.options.quote}</p>
+        <p className="mb-10 max-w-3xl font-display text-2xl leading-snug text-orange-600">{c.options.quote}</p>
 
         <h3 className="text-[clamp(26px,3vw,36px)]">{natural.title}</h3>
         <p className="mt-2 text-muted">{natural.subtitle}</p>

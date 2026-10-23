@@ -21,7 +21,7 @@ export function CtaPhoto({
       className="on-dark relative m-gap mt-16 grid min-h-110 place-items-center overflow-hidden rounded-tile px-5 py-16 text-center text-white lg:mt-24 lg:min-h-130"
     >
       <Image src={image} alt="" fill sizes="100vw" className="object-cover" />
-      <div aria-hidden className="absolute inset-0 bg-[rgb(16_30_40/.55)]" />
+      <div aria-hidden className="absolute inset-0 bg-[rgb(32_34_29/.55)]" />
       <div className="relative">
         <h2 className="mx-auto max-w-[16ch] text-[clamp(36px,5vw,68px)]">{title}</h2>
         {text && <p className="mx-auto mt-4 max-w-[46ch] text-lg text-white/85">{text}</p>}

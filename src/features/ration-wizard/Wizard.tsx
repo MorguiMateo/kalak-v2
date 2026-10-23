@@ -118,7 +118,7 @@ export function Wizard() {
           <div className="mt-12 border-t border-line pt-5 text-center">
             <button
               type="button"
-              className="text-sm text-muted underline decoration-line underline-offset-4 hover:text-navy"
+              className="text-sm text-muted underline decoration-line underline-offset-4 hover:text-charcoal"
               onClick={() => {
                 if (window.confirm("¿Borrar las respuestas y empezar de nuevo?")) {
                   navigated.current = true;

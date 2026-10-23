@@ -22,8 +22,8 @@ export function ChoicePills<T extends string>({ name, value, options, onChange }
               "inline-flex h-13 min-w-32 cursor-pointer items-center justify-center rounded-pill px-6 font-semibold transition-[background-color,color,box-shadow,transform] select-none active:scale-[.97] active:duration-150 max-sm:flex-1",
               "has-focus-visible:outline-2 has-focus-visible:outline-offset-3 has-focus-visible:outline-orange",
               checked
-                ? "bg-green-700 text-white"
-                : "bg-white shadow-[inset_0_0_0_1.5px_var(--color-line)] hover:shadow-[inset_0_0_0_1.5px_var(--color-navy)]",
+                ? "bg-orange text-ink"
+                : "bg-white shadow-[inset_0_0_0_1.5px_var(--color-line)] hover:shadow-[inset_0_0_0_1.5px_var(--color-charcoal)]",
             )}
           >
             <input

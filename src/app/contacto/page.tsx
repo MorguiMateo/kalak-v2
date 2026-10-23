@@ -63,7 +63,7 @@ export default function ContactoPage() {
               </dd>
             </div>
           </dl>
-          <p className="mt-8 font-display text-xl leading-snug text-orange-600 italic">
+          <p className="mt-8 font-display text-xl leading-snug text-orange-600">
             ¡Nos encantaría escuchar sobre tu mascota y ayudarte a encontrar la mejor opción de alimentación natural!
           </p>
         </Reveal>

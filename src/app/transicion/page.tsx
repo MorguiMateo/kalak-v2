@@ -63,7 +63,7 @@ export default function TransicionPage() {
                 {"note" in step && step.note && (
                   <p>
                     {step.note.before}
-                    <strong className="font-semibold text-navy">{step.note.strong}</strong>
+                    <strong className="font-semibold text-charcoal">{step.note.strong}</strong>
                     {step.note.after}
                   </p>
                 )}

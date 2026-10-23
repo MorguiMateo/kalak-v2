@@ -11,7 +11,7 @@ export function BreedSelect({ id, species, value, onChange }: Props) {
     <Select.Root value={value || undefined} onValueChange={onChange}>
       <Select.Trigger
         id={id}
-        className="flex h-14 w-full items-center justify-between gap-3 rounded-tile bg-white px-5 text-left text-[17px] shadow-[inset_0_0_0_1.5px_var(--color-line)] transition-shadow hover:shadow-[inset_0_0_0_1.5px_var(--color-navy)] data-placeholder:text-muted"
+        className="flex h-14 w-full items-center justify-between gap-3 rounded-tile bg-white px-5 text-left text-[17px] shadow-[inset_0_0_0_1.5px_var(--color-line)] transition-shadow hover:shadow-[inset_0_0_0_1.5px_var(--color-charcoal)] data-placeholder:text-muted"
       >
         <Select.Value placeholder="Selecciona una raza" />
         <Select.Icon aria-hidden>
@@ -22,7 +22,7 @@ export function BreedSelect({ id, species, value, onChange }: Props) {
         <Select.Content
           position="popper"
           sideOffset={6}
-          className="z-50 max-h-(--radix-select-content-available-height) w-(--radix-select-trigger-width) overflow-hidden rounded-tile bg-white shadow-[0_18px_40px_-12px_rgb(16_30_40/.35),0_0_0_1px_var(--color-line)]"
+          className="z-50 max-h-(--radix-select-content-available-height) w-(--radix-select-trigger-width) overflow-hidden rounded-tile bg-white shadow-[0_18px_40px_-12px_rgb(32_34_29/.35),0_0_0_1px_var(--color-line)]"
         >
           <Select.ScrollUpButton className="grid h-7 place-items-center text-muted">
             <Chevron up />

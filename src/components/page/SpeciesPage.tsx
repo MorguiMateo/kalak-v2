@@ -28,7 +28,7 @@ export function SpeciesPage({ content: c, highlight }: { content: SpeciesContent
       </section>
 
       <Section eyebrow={c.formula.eyebrow} title={c.formula.title}>
-        <Reveal className="mb-10 flex items-baseline gap-4 rounded-tile bg-navy px-6 py-5 text-white sm:inline-flex">
+        <Reveal className="mb-10 flex items-baseline gap-4 rounded-tile bg-charcoal px-6 py-5 text-white sm:inline-flex">
           <span className="font-display text-5xl font-semibold text-orange-300">{c.formula.proteinPercent}</span>
           <span className="text-lg">{c.formula.proteinLabel}</span>
         </Reveal>

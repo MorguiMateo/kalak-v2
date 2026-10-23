@@ -27,7 +27,7 @@ export function Benefits() {
             className="object-cover transition-transform duration-1400 group-hover:scale-[1.06]"
             style={"position" in benefit ? { objectPosition: benefit.position } : undefined}
           />
-          <div aria-hidden className="absolute inset-0 bg-linear-to-t from-[rgb(16_30_40/.7)] to-transparent to-50%" />
+          <div aria-hidden className="absolute inset-0 bg-linear-to-t from-[rgb(32_34_29/.7)] to-transparent to-50%" />
           <figcaption className="absolute inset-x-4 bottom-3.5 max-w-[20ch] font-display text-lg leading-tight font-medium lg:inset-x-6 lg:bottom-5.5 lg:text-[clamp(20px,2vw,28px)]">
             {benefit.text}
           </figcaption>

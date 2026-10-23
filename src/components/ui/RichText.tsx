@@ -5,7 +5,7 @@ export function InlineText({ parts }: { parts: readonly Inline[] }) {
     typeof part === "string" ? (
       part
     ) : "b" in part ? (
-      <strong key={i} className="font-semibold text-navy">
+      <strong key={i} className="font-semibold text-charcoal">
         {part.b}
       </strong>
     ) : (
@@ -41,7 +41,7 @@ export function RichText({ blocks }: { blocks: readonly Block[] }) {
           <ol key={i} className="grid list-decimal gap-4 pl-5 marker:font-semibold marker:text-orange-600">
             {block.ol.map((group) => (
               <li key={group.title}>
-                <p className="font-semibold text-navy">{group.title}</p>
+                <p className="font-semibold text-charcoal">{group.title}</p>
                 <ul className="mt-1.5 grid list-disc gap-1 pl-5 marker:text-sand">
                   {group.items.map((item) => (
                     <li key={item}>{item}</li>

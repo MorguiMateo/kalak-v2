@@ -25,7 +25,7 @@ export function cardClass(checked: boolean, disabled = false) {
     "group relative flex flex-col overflow-hidden rounded-tile bg-white text-left transition-[box-shadow,transform,opacity]",
     "has-focus-visible:outline-2 has-focus-visible:outline-offset-3 has-focus-visible:outline-orange",
     disabled ? "cursor-not-allowed" : "cursor-pointer active:scale-[.98] active:duration-150",
-    checked ? "shadow-[inset_0_0_0_3px_var(--color-green-700)]" : "shadow-[inset_0_0_0_1.5px_var(--color-line)]",
+    checked ? "shadow-[inset_0_0_0_3px_var(--color-orange)]" : "shadow-[inset_0_0_0_1.5px_var(--color-line)]",
   );
 }
 
@@ -35,7 +35,7 @@ export function CheckBadge({ checked }: { checked: boolean }) {
       aria-hidden
       className={cn(
         "absolute top-2 right-2 z-10 grid size-7 place-items-center rounded-full shadow-[0_2px_8px_rgb(0_0_0/.15)] transition-[background-color,color,transform] duration-300 ease-[cubic-bezier(.3,1.6,.5,1)] lg:top-3 lg:right-3 lg:size-8",
-        checked ? "scale-110 bg-green-700 text-white" : "bg-white text-transparent",
+        checked ? "scale-110 bg-orange text-ink" : "bg-white text-transparent",
       )}
     >
       <svg width="14" height="14" viewBox="0 0 16 16" fill="none">
@@ -67,7 +67,7 @@ export function CardText({ label, children }: { label: string; children?: ReactN
   );
 }
 
-/** Single choice as cards (radio group). Selected: green border and check. */
+/** Single choice as cards (radio group). Selected: brand-orange border and check. */
 export function ChoiceCards<T extends string>({ name, value, options, onChange, columns }: Props<T>) {
   const cols = columns ?? options.length;
   const textOnly = options.every((o) => !o.image);

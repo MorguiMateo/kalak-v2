@@ -8,7 +8,7 @@ export function PhotoBanner({ image, eyebrow, title, children }: Props) {
   return (
     <div className="on-dark relative flex h-60 items-end overflow-hidden text-white lg:h-85">
       <Image src={image} alt="" fill preload sizes="100vw" className="object-cover" />
-      <div aria-hidden className="absolute inset-0 bg-linear-to-t from-[rgb(16_30_40/.8)] to-[rgb(16_30_40/.2)]" />
+      <div aria-hidden className="absolute inset-0 bg-linear-to-t from-[rgb(32_34_29/.8)] to-[rgb(32_34_29/.2)]" />
       <div className="relative mx-auto w-[min(100%-40px,var(--container-calc))] pb-8">
         {eyebrow && <p className="eyebrow opacity-85">{eyebrow}</p>}
         <h1 className="mt-2.5 text-[clamp(34px,4.6vw,56px)]">{title}</h1>

@@ -50,7 +50,7 @@ export default function SuplementosPage() {
                     {formatPrice(prices.supplements[s.price])}
                     {prices.supplements[s.price] > 0 && <span className="font-normal text-muted"> / pote</span>}
                   </p>
-                  <a href={`#${s.id}-info`} className={buttonClasses({ variant: "ghost", size: "sm" }) + " mt-3 self-start px-0 text-navy"}>
+                  <a href={`#${s.id}-info`} className={buttonClasses({ variant: "ghost", size: "sm" }) + " mt-3 self-start px-0 text-charcoal"}>
                     {c.detailsCta} ↓
                   </a>
                 </div>
@@ -87,7 +87,7 @@ export default function SuplementosPage() {
       ))}
 
       <Section>
-        <p className="mx-auto max-w-3xl text-center font-display text-2xl leading-snug text-orange-600 italic">{c.quote}</p>
+        <p className="mx-auto max-w-3xl text-center font-display text-2xl leading-snug text-orange-600">{c.quote}</p>
       </Section>
 
       <FinalCta />

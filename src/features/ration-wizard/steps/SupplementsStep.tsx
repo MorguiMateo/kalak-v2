@@ -40,7 +40,7 @@ function cards(pet: PetDraft): Card[] {
       disabled: false,
       details: (
         <>
-          <p className="font-medium text-navy">Dosis recomendada:</p>
+          <p className="font-medium text-charcoal">Dosis recomendada:</p>
           <p>{caldo.dailyDose} cucharada(s) por día</p>
           <p>{caldo.monthlyPots} pote(s) al mes</p>
           <p className="mt-1 text-xs italic">1 pote = 30 cucharadas</p>
@@ -57,7 +57,7 @@ function cards(pet: PetDraft): Card[] {
       disabled: false,
       details: (
         <>
-          <p className="font-medium text-navy">Dosis recomendada:</p>
+          <p className="font-medium text-charcoal">Dosis recomendada:</p>
           <p>{curcuma.dailyDose} cucharadita(s) por día</p>
           <p>{curcuma.monthlyPots} pote(s) al mes</p>
           <p className="mt-1 text-xs italic">1 pote = 10 cucharaditas</p>

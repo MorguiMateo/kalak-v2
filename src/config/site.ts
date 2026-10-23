@@ -1,5 +1,11 @@
+const productionHost = process.env.VERCEL_PROJECT_PRODUCTION_URL;
+
 export const site = {
   name: "Kalak",
+  /** Absolute base URL for metadata, sitemap and OG images. */
+  url: process.env.NEXT_PUBLIC_SITE_URL ?? (productionHost ? `https://${productionHost}` : "http://localhost:3000"),
+  description:
+    "Alimentación natural para perros y gatos en Mendoza. Naturalmente deliciosa, profesionalmente formulada.",
   tagline: "Comida real para mascotas",
   city: "Mendoza",
   whatsapp: {
@@ -26,6 +32,15 @@ export const mainNav = [
   { href: "/suplementos", label: "Suplementos" },
   { href: "/mini-cursos", label: "Mini cursos" },
   { href: "/transicion", label: "Transición" },
+] as const;
+
+/** Every public route, for the sitemap. */
+export const routes = [
+  "/",
+  ...mainNav.map((item) => item.href),
+  "/calcula-racion",
+  "/hacer-pedido",
+  "/contacto",
 ] as const;
 
 export const ctaLinks = {

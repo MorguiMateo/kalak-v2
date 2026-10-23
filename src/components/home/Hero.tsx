@@ -20,7 +20,7 @@ export function Hero() {
       </picture>
       <div
         aria-hidden
-        className="absolute inset-0 bg-linear-to-t from-[rgb(16_30_40/.78)] via-[rgb(16_30_40/.15)_55%] to-[rgb(16_30_40/.35)]"
+        className="absolute inset-0 bg-linear-to-t from-[rgb(32_34_29/.78)] via-[rgb(32_34_29/.15)_55%] to-[rgb(32_34_29/.35)]"
       />
       <div className="container-site relative pb-12 lg:pb-18 [&>*]:animate-rise">
         <p className="eyebrow opacity-85 [animation-delay:.3s]">{hero.eyebrow}</p>

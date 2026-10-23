@@ -44,7 +44,7 @@ export function Header() {
     <header
       className={cn(
         "fixed inset-x-0 top-0 z-50 transition-[background-color,color,box-shadow]",
-        solid ? "bg-cream/90 text-navy shadow-[0_1px_0_var(--color-line)] backdrop-blur-md" : "text-white",
+        solid ? "bg-cream/90 text-charcoal shadow-[0_1px_0_var(--color-line)] backdrop-blur-md" : "text-white",
       )}
     >
       <div
@@ -119,7 +119,7 @@ function MobileMenu({
       aria-label="Menú"
       inert={!open}
       className={cn(
-        "fixed inset-0 flex flex-col overflow-y-auto bg-navy px-6 pt-24 pb-10 text-white transition-[opacity,visibility] lg:hidden",
+        "fixed inset-0 flex flex-col overflow-y-auto bg-charcoal px-6 pt-24 pb-10 text-white transition-[opacity,visibility] lg:hidden",
         open ? "visible opacity-100" : "invisible opacity-0",
       )}
     >
