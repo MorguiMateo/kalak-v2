@@ -100,7 +100,7 @@ Estructura:
 - Leer: `transicion/`, `suplementos/` y `mini-cursos/page.tsx`.
 - Hacer: lo mismo que en la fase 7. Suplementos lee los precios de `config/prices.ts`.
 
-### [ ] Fase 9: Hacer pedido y Contacto
+### [x] Fase 9: Hacer pedido y Contacto
 - Leer: `hacer-pedido/` y `contacto/page.tsx`.
 - Hacer: el formulario de pedido, reutilizando `pricing` y `lib/whatsapp` (sin precios duplicados), y la página de contacto con `config/site.ts`.
 
@@ -215,3 +215,7 @@ Estructura:
 - Transición: las 3 infografías (`Transicion1-3.webp`) con `alt` que describe su contenido. **Inconsistencia de la web vieja que se mantiene**: el texto dice días 1-6 / 7-13 / 13+ y las infografías y la FAQ de la Home dicen 1-5 / 6-10 / 11+. Confirmar cuál vale. El gráfico `transitionData` de la página vieja no se mostraba (código muerto) y no se migró.
 - Suplementos: precio desde `config/prices.ts` (`calcio`, `curcuma`, `caldo` = Caldo de Colágeno, `vinagre` nuevo en 0). "Ver Detalles" = anclas `#<id>-info`. `prices.supplements.colageno` (existía en la web vieja, $1300) no está asociado a ningún producto: confirmar si sobra.
 - Mini-cursos: los botones "Comenzar Curso" y "Explorar Todos los Cursos" no hacían nada en la web vieja; ahora abren WhatsApp con un mensaje sobre el curso.
+
+### Fase 9 (2026-10-22)
+- `/hacer-pedido`: `features/order/OrderForm.tsx` (cliente, 3 pasos: "¿Ha realizado un pedido antes?" → cantidades → resumen + nombre). "No, es mi primer pedido" lleva a `/calcula-racion`, igual que antes. Lógica en `features/order/order.ts` (`quickOrderTotals`, `quickOrderMessage`), que reutiliza `orderPrice` de `features/ration` y lee precios de `config/prices.ts` (**se eliminaron los precios duplicados** de la página vieja: 5000/5500/3000). Golden test contra copia literal en `features/order/__fixtures__/legacy.ts`.
+- `/contacto`: datos desde `config/site.ts`. El formulario viejo solo simulaba el envío (no mandaba nada); ahora abre WhatsApp con el mensaje (`features/contact/message.ts`). Puntos de entrega: la página vieja listaba solo 2 (Carrodilla, El Challao); ahora muestra los 4 de `site.pickupPoints`, igual que el footer.
