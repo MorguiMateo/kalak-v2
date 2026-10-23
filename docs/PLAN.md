@@ -96,7 +96,7 @@ Estructura:
 - Leer: `perros/`, `gatos/` y `dieta-kalak/page.tsx`.
 - Hacer: `content/*.ts` y las tres páginas como Server Components, reutilizando Section y Card.
 
-### [ ] Fase 8: Transición, Suplementos y Mini-cursos
+### [x] Fase 8: Transición, Suplementos y Mini-cursos
 - Leer: `transicion/`, `suplementos/` y `mini-cursos/page.tsx`.
 - Hacer: lo mismo que en la fase 7. Suplementos lee los precios de `config/prices.ts`.
 
@@ -209,3 +209,9 @@ Estructura:
 - Componentes de página en `components/page/`: `SpeciesPage` (layout compartido de perros/gatos), `FeatureGrid` (tarjetas título+texto, opción `numbered`), `IngredientCards` (foto + %), `CtaPhoto` (cierre con foto; `FinalCta` de la Home lo usa), `Highlight` (palabra clave en `<em>`).
 - Perros/Gatos usan `PhotoBanner` con `perroComiendo`/`gatoComiendo` (la página vieja no tenía foto arriba) y terminan con el CTA de la Home.
 - Dieta Kalak: las pestañas "Dietas Naturales / Dieta Comercial Suplementada" pasan a ser dos bloques seguidos (mismo texto, sin tabs: Radix solo accordion/select). Los grupos "Beneficios / Características / Suplementación" son acordeones.
+
+### Fase 8 (2026-10-22)
+- Contenido literal en `content/transicion.ts`, `content/suplementos.ts` + `content/suplementos-items.ts`, `content/mini-cursos.ts`. Páginas `app/transicion`, `app/suplementos`, `app/mini-cursos` (Server Components). `components/page/Badges`.
+- Transición: las 3 infografías (`Transicion1-3.webp`) con `alt` que describe su contenido. **Inconsistencia de la web vieja que se mantiene**: el texto dice días 1-6 / 7-13 / 13+ y las infografías y la FAQ de la Home dicen 1-5 / 6-10 / 11+. Confirmar cuál vale. El gráfico `transitionData` de la página vieja no se mostraba (código muerto) y no se migró.
+- Suplementos: precio desde `config/prices.ts` (`calcio`, `curcuma`, `caldo` = Caldo de Colágeno, `vinagre` nuevo en 0). "Ver Detalles" = anclas `#<id>-info`. `prices.supplements.colageno` (existía en la web vieja, $1300) no está asociado a ningún producto: confirmar si sobra.
+- Mini-cursos: los botones "Comenzar Curso" y "Explorar Todos los Cursos" no hacían nada en la web vieja; ahora abren WhatsApp con un mensaje sobre el curso.

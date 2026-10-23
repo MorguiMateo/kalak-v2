@@ -1,3 +1,10 @@
+import Transicion1 from "../../public/images/Transicion1.webp";
+import Transicion2 from "../../public/images/Transicion2.webp";
+import Transicion3 from "../../public/images/Transicion3.webp";
+import calcio1 from "../../public/images/calcio1.webp";
+import caldo1 from "../../public/images/caldo1.webp";
+import curcuma1 from "../../public/images/curcuma1.webp";
+import vinagre1 from "../../public/images/vinagre1.webp";
 import acelga from "../../public/images/acelga.webp";
 import background from "../../public/images/background.webp";
 import calabaza from "../../public/images/calabaza.webp";
@@ -16,6 +23,13 @@ import tiniBrillante from "../../public/images/tiniBrillante.webp";
 
 /** Photos referenced by name from `src/content/*`. Add new ones here. */
 export const images = {
+  Transicion1,
+  Transicion2,
+  Transicion3,
+  calcio1,
+  caldo1,
+  curcuma1,
+  vinagre1,
   acelga,
   background,
   calabaza,

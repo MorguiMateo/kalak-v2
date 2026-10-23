@@ -13,6 +13,7 @@ export const prices = {
     curcuma: 0,
     calcio: 0,
     colageno: 0,
+    vinagre: 0,
   },
 } as const;
 
