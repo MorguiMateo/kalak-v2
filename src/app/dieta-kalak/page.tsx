@@ -87,7 +87,7 @@ export default function DietaKalakPage() {
         {c.species.map((s, i) => (
           <Reveal as="article" key={s.href} variant="zoom" index={i} className="group on-dark relative flex min-h-110 items-end overflow-hidden rounded-tile text-white">
             <Image src={images[s.image]} alt={s.alt} fill sizes="(max-width: 960px) 100vw, 50vw" className="object-cover transition-transform duration-1400 group-hover:scale-[1.06]" />
-            <div aria-hidden className="absolute inset-0 bg-linear-to-t from-[rgb(32_34_29/.8)] to-transparent to-70%" />
+            <div aria-hidden className="absolute inset-0 bg-linear-to-t from-[rgb(32_34_29/.85)] via-[rgb(32_34_29/.75)_60%] to-[rgb(32_34_29/.3)]" />
             <div className="relative p-6 lg:p-10">
               <h2 className="text-[clamp(28px,3vw,40px)]">{s.title}</h2>
               <p className="mt-3 max-w-[46ch] text-white/85">{s.text}</p>

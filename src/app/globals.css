@@ -95,7 +95,11 @@
     @apply text-orange-300;
   }
   :focus-visible {
-    @apply rounded-md outline-2 outline-offset-3 outline-orange;
+    @apply rounded-md outline-2 outline-offset-3 outline-orange-600;
+  }
+  .on-dark :focus-visible,
+  footer :focus-visible {
+    @apply outline-orange-300;
   }
 }
 

@@ -61,10 +61,11 @@ export function ButtonLink({
   arrow,
   className,
   children,
+  prefetch = false,
   ...props
 }: StyleProps & Omit<ComponentProps<typeof Link>, "children">) {
   return (
-    <Link className={cn(buttonClasses({ variant, size }), className)} {...props}>
+    <Link prefetch={prefetch} className={cn(buttonClasses({ variant, size }), className)} {...props}>
       <Content arrow={arrow}>{children}</Content>
     </Link>
   );

@@ -20,7 +20,7 @@ export function ChoicePills<T extends string>({ name, value, options, onChange }
             key={option.value}
             className={cn(
               "inline-flex h-13 min-w-32 cursor-pointer items-center justify-center rounded-pill px-6 font-semibold transition-[background-color,color,box-shadow,transform] select-none active:scale-[.97] active:duration-150 max-sm:flex-1",
-              "has-focus-visible:outline-2 has-focus-visible:outline-offset-3 has-focus-visible:outline-orange",
+              "has-focus-visible:outline-2 has-focus-visible:outline-offset-3 has-focus-visible:outline-orange-600",
               checked
                 ? "bg-orange text-ink"
                 : "bg-white shadow-[inset_0_0_0_1.5px_var(--color-line)] hover:shadow-[inset_0_0_0_1.5px_var(--color-charcoal)]",

@@ -14,7 +14,7 @@ Para empezar una fase: leer este archivo y `docs/PLAN.md`, y de la web vieja (`~
 ## Stack
 - Next.js 16.4 (App Router, `cacheComponents` + `partialPrefetching` activados), React 19.3, TypeScript strict, pnpm.
 - Tailwind v4 vía `@tailwindcss/turbopack` (no hay `postcss.config`). Tokens en `@theme` de `src/app/globals.css`; la paleta por defecto de Tailwind está desactivada (`--color-*: initial`), solo existen los colores de marca.
-- Fuentes con `next/font/google`: Inter (`font-sans`) y Fraunces con eje `opsz` (`font-display`).
+- Fuentes con `next/font/google`: Inter (`font-sans`) y Oswald (`font-display`), con títulos altos y condensados acordes al logotipo.
 - `motion` solo en componentes cliente puntuales. Radix solo para accordion y select. Vitest para lógica pura.
 
 ## Estructura
@@ -33,7 +33,7 @@ Para empezar una fase: leer este archivo y `docs/PLAN.md`, y de la web vieja (`~
 - Precios solo desde `config/prices.ts`. `0` = sin cargar → `formatPrice` muestra "Consultar" (`TODO(precios)`).
 - Textos de la web vieja se copian literales a `src/content/*`.
 - Código e identificadores en inglés; textos de UI en español rioplatense.
-- Títulos: la palabra clave va en `<em>` (itálica naranja; `on-dark` en fondos oscuros).
+- Títulos: la palabra clave va en `<em>` (énfasis naranja sin itálica; `on-dark` en fondos oscuros).
 - Contraste: nunca texto blanco sobre `orange`; el botón primario usa `text-ink`.
 - Animaciones: `Reveal` (`variant="up" | "zoom"`, `index` para escalonar) para entradas al hacer scroll. Todo respeta `prefers-reduced-motion` (global en `globals.css`).
 - Imágenes con `next/image` y `sizes` correctos; `preload` solo para la imagen LCP.

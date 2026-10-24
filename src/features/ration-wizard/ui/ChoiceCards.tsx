@@ -23,7 +23,7 @@ type Props<T extends string> = {
 export function cardClass(checked: boolean, disabled = false) {
   return cn(
     "group relative flex flex-col overflow-hidden rounded-tile bg-white text-left transition-[box-shadow,transform,opacity]",
-    "has-focus-visible:outline-2 has-focus-visible:outline-offset-3 has-focus-visible:outline-orange",
+    "has-focus-visible:outline-2 has-focus-visible:outline-offset-3 has-focus-visible:outline-orange-600",
     disabled ? "cursor-not-allowed" : "cursor-pointer active:scale-[.98] active:duration-150",
     checked ? "shadow-[inset_0_0_0_3px_var(--color-orange)]" : "shadow-[inset_0_0_0_1.5px_var(--color-line)]",
   );

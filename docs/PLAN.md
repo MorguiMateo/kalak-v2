@@ -32,7 +32,7 @@ Decisiones tomadas:
 ## Stack (fijo para todas las fases)
 - Next.js (última estable, App Router), TypeScript strict y pnpm.
 - Tailwind v4 con tokens en `@theme`. `motion` solo en componentes cliente puntuales.
-- Server Components por defecto. `next/font/google`: Inter o Geist para el cuerpo y Fraunces para los títulos.
+- Server Components por defecto. `next/font/google`: Inter para el cuerpo y Oswald para los títulos (ajuste de identidad solicitado por el usuario; ver `docs/design.md`).
 - Radix solo para accordion y select. Vitest. Mismas rutas que hoy.
 
 Estructura:
@@ -104,7 +104,7 @@ Estructura:
 - Leer: `hacer-pedido/` y `contacto/page.tsx`.
 - Hacer: el formulario de pedido, reutilizando `pricing` y `lib/whatsapp` (sin precios duplicados), y la página de contacto con `config/site.ts`.
 
-### [ ] Fase 10: Pulido (SEO, rendimiento y accesibilidad)
+### [~] Fase 10: Pulido (SEO, rendimiento y accesibilidad)
 - Hacer:
   - `metadata` por página, `sitemap`, `robots` y OG image.
   - Revisar `sizes` y `priority` de las imágenes.
@@ -219,3 +219,14 @@ Estructura:
 ### Fase 9 (2026-10-22)
 - `/hacer-pedido`: `features/order/OrderForm.tsx` (cliente, 3 pasos: "¿Ha realizado un pedido antes?" → cantidades → resumen + nombre). "No, es mi primer pedido" lleva a `/calcula-racion`, igual que antes. Lógica en `features/order/order.ts` (`quickOrderTotals`, `quickOrderMessage`), que reutiliza `orderPrice` de `features/ration` y lee precios de `config/prices.ts` (**se eliminaron los precios duplicados** de la página vieja: 5000/5500/3000). Golden test contra copia literal en `features/order/__fixtures__/legacy.ts`.
 - `/contacto`: datos desde `config/site.ts`. El formulario viejo solo simulaba el envío (no mandaba nada); ahora abre WhatsApp con el mensaje (`features/contact/message.ts`). Puntos de entrega: la página vieja listaba solo 2 (Carrodilla, El Challao); ahora muestra los 4 de `site.pickupPoints`, igual que el footer.
+
+
+### Fase 10 · avance verificado (2026-10-24)
+- Identidad ajustada al logo: carbón, naranja y crema; Inter + Oswald, con lettering original intacto.
+- Mejoras de accesibilidad: foco contrastado, navegación móvil con foco contenido y restaurado al cerrar, carrusel accesible por teclado y mayor contraste sobre fotos. Corregida la advertencia de `next/image` dentro del bloque sticky del FAQ.
+- Imágenes: preload responsive para el hero y tamaños ajustados; se evita prefetch de los enlaces del menú móvil cerrado y de los botones para no competir con la carga inicial.
+- Scripts reproducibles de auditoría en `scripts/audit-browser.mjs` y `scripts/audit-lighthouse.mjs`; herramientas externas al bundle de la aplicación.
+- Auditoría local previa: las 10 rutas sin desborde móvil ni infracciones axe AA; wizard de 1 y 2 mascotas, restauración de sesión, pedido rápido, contacto y menú verificados sin enviar mensajes reales.
+- Lighthouse móvil simulado del 2026-10-23: Home 90/100/100/100 y Calculadora 95/100/100/100 (rendimiento/accesibilidad/buenas prácticas/SEO). La fase sigue abierta: Home aún no cumple el objetivo de rendimiento ≥95.
+- Verificación repetida el 2026-10-24: `pnpm lint`, `pnpm typecheck`, `pnpm test` (26 tests en 6 archivos) y `pnpm build` correctos.
+- Fase 11 pendiente: precios definitivos, pedido real y cambio al proyecto de producción legado. No se han eliminado proyectos ni archivado repositorios.

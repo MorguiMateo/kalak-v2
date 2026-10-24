@@ -2,7 +2,7 @@
 
 import Link from "next/link";
 import { usePathname } from "next/navigation";
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { LogoMark } from "@/components/brand/Logo";
 import { ButtonLink } from "@/components/ui/Button";
 import { ctaLinks, mainNav } from "@/config/site";
@@ -19,6 +19,8 @@ export function Header() {
   const scrolled = useScrolled();
   const [menuOpen, setMenuOpen] = useState(false);
   const [menuPath, setMenuPath] = useState(pathname);
+  const headerRef = useRef<HTMLElement>(null);
+  const menuButtonRef = useRef<HTMLButtonElement>(null);
 
   // Close the menu when the route changes.
   if (menuPath !== pathname) {
@@ -28,12 +30,33 @@ export function Header() {
 
   useEffect(() => {
     if (!menuOpen) return;
-    const onKey = (e: KeyboardEvent) => e.key === "Escape" && setMenuOpen(false);
+    const header = headerRef.current;
+    const trigger = menuButtonRef.current;
+    const onKey = (e: KeyboardEvent) => {
+      if (e.key === "Escape") {
+        e.preventDefault();
+        setMenuOpen(false);
+      }
+      if (e.key !== "Tab" || !header) return;
+      const controls = Array.from(header.querySelectorAll<HTMLElement>("a[href], button"))
+        .filter((el) => el.getClientRects().length > 0 && getComputedStyle(el).visibility === "visible");
+      const index = controls.findIndex((el) => el === document.activeElement);
+      const nextIndex = (index + (e.shiftKey ? -1 : 1) + controls.length) % controls.length;
+      e.preventDefault();
+      controls[nextIndex]?.focus();
+    };
+    const desktop = window.matchMedia("(min-width: 960px)");
+    const onDesktop = () => { if (desktop.matches) setMenuOpen(false); };
     document.addEventListener("keydown", onKey);
+    desktop.addEventListener("change", onDesktop);
     document.documentElement.style.overflow = "hidden";
+    const focusFrame = requestAnimationFrame(() => header?.querySelector<HTMLElement>("#mobile-menu a")?.focus());
     return () => {
+      cancelAnimationFrame(focusFrame);
       document.removeEventListener("keydown", onKey);
+      desktop.removeEventListener("change", onDesktop);
       document.documentElement.style.overflow = "";
+      trigger?.focus();
     };
   }, [menuOpen]);
 
@@ -42,9 +65,13 @@ export function Header() {
 
   return (
     <header
+      ref={headerRef}
+      role={menuOpen ? "dialog" : undefined}
+      aria-modal={menuOpen || undefined}
+      aria-label={menuOpen ? "Menú de navegación" : undefined}
       className={cn(
         "fixed inset-x-0 top-0 z-50 transition-[background-color,color,box-shadow]",
-        solid ? "bg-cream/90 text-charcoal shadow-[0_1px_0_var(--color-line)] backdrop-blur-md" : "text-white",
+        solid ? "bg-cream/90 text-charcoal shadow-[0_1px_0_var(--color-line)] backdrop-blur-md" : "on-dark text-white",
       )}
     >
       <div
@@ -54,7 +81,7 @@ export function Header() {
         )}
       >
         <Link href="/" aria-label="Kalak, inicio" className="shrink-0">
-          <LogoMark preload className={cn("transition-[height]", scrolled ? "h-9.5" : "h-11.5")} />
+          <LogoMark className={cn("transition-[height]", scrolled ? "h-9.5" : "h-11.5")} />
         </Link>
 
         <nav aria-label="Principal" className="hidden gap-0.5 lg:flex">
@@ -77,6 +104,7 @@ export function Header() {
         </div>
 
         <button
+          ref={menuButtonRef}
           type="button"
           className="-mr-2.5 grid size-11 place-items-center lg:hidden"
           aria-label={menuOpen ? "Cerrar menú" : "Abrir menú"}
@@ -127,6 +155,7 @@ function MobileMenu({
         <Link
           key={item.href}
           href={item.href}
+          prefetch={open ? null : false}
           aria-current={pathname === item.href ? "page" : undefined}
           onClick={onNavigate}
           className="py-3.5 font-display text-[30px] leading-none font-medium aria-[current=page]:text-orange-300"
