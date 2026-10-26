@@ -1,5 +1,6 @@
 import type { Metadata } from "next";
 import { Guarda } from "@/components/brand/Guarda";
+import { surfaceClasses } from "@/components/ui/Card";
 import { PhotoBanner } from "@/components/ui/PhotoBanner";
 import { Reveal } from "@/components/ui/Reveal";
 import { site } from "@/config/site";
@@ -13,7 +14,7 @@ export const metadata: Metadata = {
 };
 
 const external = { target: "_blank", rel: "noopener noreferrer" } as const;
-const card = "rounded-tile bg-white p-6 shadow-[inset_0_0_0_1.5px_var(--color-line)] lg:p-8";
+const card = surfaceClasses({ variant: "outlined" }) + " p-6 lg:p-8";
 
 export default function ContactoPage() {
   return (

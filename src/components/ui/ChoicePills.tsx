@@ -9,7 +9,6 @@ type Props<T extends string> = {
   onChange: (value: T) => void;
 };
 
-/** Text options (radio group) as pills. */
 export function ChoicePills<T extends string>({ name, value, options, onChange }: Props<T>) {
   return (
     <div className="flex flex-wrap gap-2">

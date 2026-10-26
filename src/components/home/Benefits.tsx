@@ -7,7 +7,6 @@ import { images } from "@/lib/images";
 const layout = ["col-span-2 lg:col-span-1 lg:row-span-2", "", "", "col-span-2"];
 const sizes = ["(max-width: 960px) 100vw, 40vw", "(max-width: 960px) 50vw, 30vw", "(max-width: 960px) 50vw, 30vw", "(max-width: 960px) 100vw, 60vw"];
 
-/** Bento of benefits, edge to edge. */
 export function Benefits() {
   return (
     <section aria-label="Beneficios" className="grid grid-cols-2 grid-rows-[320px] auto-rows-[230px] gap-gap px-gap lg:grid-cols-[1.4fr_1fr_1fr] lg:grid-rows-[repeat(2,minmax(240px,27vw))]">

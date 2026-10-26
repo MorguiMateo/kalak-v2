@@ -16,7 +16,6 @@ export function InlineText({ parts }: { parts: readonly Inline[] }) {
   );
 }
 
-/** Renders content blocks (paragraphs and lists) with the site typography. */
 export function RichText({ blocks }: { blocks: readonly Block[] }) {
   return (
     <div className="grid gap-3">

@@ -7,7 +7,6 @@ function subscribe(onChange: () => void) {
   return () => window.removeEventListener("scroll", onChange);
 }
 
-/** True once the page has scrolled past `threshold` pixels. */
 export function useScrolled(threshold = 24) {
   return useSyncExternalStore(
     subscribe,

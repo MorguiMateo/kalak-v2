@@ -6,7 +6,7 @@ import { Badges } from "@/components/page/Badges";
 import { FeatureGrid } from "@/components/page/FeatureGrid";
 import { Highlight } from "@/components/page/Highlight";
 import { buttonClasses } from "@/components/ui/Button";
-import { Card } from "@/components/ui/Card";
+import { Card, surfaceClasses } from "@/components/ui/Card";
 import { PhotoBanner } from "@/components/ui/PhotoBanner";
 import { Reveal } from "@/components/ui/Reveal";
 import { Section } from "@/components/ui/Section";
@@ -50,7 +50,7 @@ export default function SuplementosPage() {
                     {formatPrice(prices.supplements[s.price])}
                     {prices.supplements[s.price] > 0 && <span className="font-normal text-muted"> / pote</span>}
                   </p>
-                  <a href={`#${s.id}-info`} className={buttonClasses({ variant: "ghost", size: "sm" }) + " mt-3 self-start px-0 text-charcoal"}>
+                  <a href={`#${s.id}-info`} className={buttonClasses({ variant: "text", size: "sm" }) + " mt-3 self-start"}>
                     {c.detailsCta} ↓
                   </a>
                 </div>
@@ -61,14 +61,14 @@ export default function SuplementosPage() {
       </Section>
 
       <Section title={c.why.title} intro={c.why.intro}>
-        <FeatureGrid items={c.why.items} className="lg:grid-cols-4" />
+        <FeatureGrid items={c.why.items} columns={4} />
       </Section>
 
       {supplementItems.map((s) => (
         <Section key={s.id} id={`${s.id}-info`} title={<Highlight text={s.detailsTitle} word={s.name} />} className="scroll-mt-20">
           <div className="grid gap-gap sm:grid-cols-2 lg:grid-cols-4">
             {s.groups.map((g, i) => (
-              <Reveal key={g.title} index={i} className="rounded-tile bg-white p-6 shadow-[inset_0_0_0_1.5px_var(--color-line)]">
+              <Reveal key={g.title} index={i} className={surfaceClasses({ variant: "outlined" }) + " p-6"}>
                 <h3 className="text-xl">{g.title}</h3>
                 <ul className="mt-3 grid gap-1.5 text-[15px] text-muted">
                   {g.items.map((item) => (

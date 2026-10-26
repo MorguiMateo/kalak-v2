@@ -23,6 +23,10 @@ export type OrderTotals = {
   calcioPots: number;
 };
 
+/** An order needs at least one actual product, independently of its price. */
+export const isEmptyOrder = (totals: OrderTotals) =>
+  !Object.values(totals).some((quantity) => Number.isFinite(quantity) && quantity > 0);
+
 export function petOrder(pet: Pet, duration: Duration): PetOrder {
   const dailyKalak = pet.diet === "supplements" ? 0 : dailyKalakGrams(pet);
   return {

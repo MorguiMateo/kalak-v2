@@ -1,6 +1,6 @@
 import { sanitizeName } from "../state";
 import { PetStack, QuestionField } from "../ui/Question";
-import { inputClass } from "../ui/input";
+import { inputClass } from "@/components/ui/input";
 import type { StepProps } from "./types";
 
 export function NameStep({ state, dispatch }: StepProps) {

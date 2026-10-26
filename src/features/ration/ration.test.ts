@@ -1,6 +1,6 @@
 import { describe, expect, it } from "vitest";
 import { formatPrice } from "@/config/prices";
-import { orderMessage, orderPrice, resolveDuration, type Pet } from "./index";
+import { isEmptyOrder, orderMessage, orderPrice, orderTotals, petOrder, resolveDuration, type Pet } from "./index";
 
 const olga: Pet = {
   name: "Olga",
@@ -47,4 +47,25 @@ it("example order (25kg adult dog, raw, 1 month)", () => {
   });
   expect(message).toContain("* Kalak para 1 mes: 23 bolsa(s) de 1kg (750g/día)");
   expect(message).toContain("*PRECIO TOTAL: 88500 ARS*");
+});
+
+describe("actual order quantities", () => {
+  it("detects an empty supplements-only order, including calcium with zero pots", () => {
+    for (const supplements of [[], ["calcio"]] as const) {
+      const totals = orderTotals([petOrder({ ...olga, diet: "supplements", supplements }, resolveDuration("1_month"))]);
+      expect(totals).toEqual({ dogBags: 0, catBags: 0, caldoPots: 0, curcumaPots: 0, calcioPots: 0 });
+      expect(isEmptyOrder(totals)).toBe(true);
+    }
+  });
+
+  it("accepts an aggregate with a real supplement, even before prices load", () => {
+    const duration = resolveDuration("1_month");
+    const totals = orderTotals([
+      petOrder({ ...olga, diet: "supplements", supplements: [] }, duration),
+      petOrder({ ...olga, diet: "supplements", supplements: ["curcuma"] }, duration),
+    ]);
+    expect(isEmptyOrder(totals)).toBe(false);
+    expect(totals.curcumaPots).toBeGreaterThan(0);
+    expect(orderPrice(totals).complete).toBe(false);
+  });
 });

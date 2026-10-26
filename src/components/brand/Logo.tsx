@@ -10,7 +10,6 @@ export function LogoMark({ className, preload }: { className?: string; preload?:
   );
 }
 
-/** Fox + wordmark + tagline. */
 export function LogoFull({ className }: { className?: string }) {
   return (
     <Image

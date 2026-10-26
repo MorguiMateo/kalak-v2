@@ -1,7 +1,7 @@
 import type { DurationChoice } from "@/features/ration";
 import { CUSTOM_DAYS_MAX, parseCustomDays } from "../state";
-import { ChoicePills } from "../ui/ChoicePills";
-import { inputClass } from "../ui/input";
+import { ChoicePills } from "@/components/ui/ChoicePills";
+import { inputClasses } from "@/components/ui/input";
 import { QuestionGroup } from "../ui/Question";
 import type { StepProps } from "./types";
 
@@ -29,7 +29,7 @@ export function DurationStep({ state, dispatch }: StepProps) {
           </label>
           <input
             id="custom-days"
-            className={`${inputClass} mt-2 max-w-60 tabular-nums`}
+            className={`${inputClasses({ width: "compact" })} mt-2 tabular-nums`}
             inputMode="numeric"
             autoComplete="off"
             placeholder="Número de días"

@@ -3,10 +3,10 @@
 import { useEffect, useReducer, useRef, useState, type CSSProperties } from "react";
 import { Button } from "@/components/ui/Button";
 import { PhotoBanner } from "@/components/ui/PhotoBanner";
+import { Progress } from "@/components/ui/Progress";
 import bannerImage from "../../../public/images/perroComiendo.webp";
 import { currentStep, firstReachableStep } from "./navigation";
 import { initialState, loadState, saveState, wizardReducer } from "./state";
-import { Progress } from "./ui/Progress";
 
 const LEAVE_MS = 260;
 
@@ -19,17 +19,16 @@ export function Wizard() {
   const stepRef = useRef<HTMLDivElement>(null);
   const navigated = useRef(false);
 
-  // Restore the progress saved in this tab.
   useEffect(() => {
-    const saved = loadState(sessionStorage);
+    const saved = loadState(() => window.sessionStorage);
     dispatch({ type: "hydrate", saved: saved && { ...saved, step: firstReachableStep(saved) } });
   }, []);
 
   useEffect(() => {
-    if (state.ready) saveState(sessionStorage, state);
+    if (state.ready) saveState(() => window.sessionStorage, state);
   }, [state]);
 
-  // After each step change: bring the wizard into view and move focus to the new step.
+  // Hydration must not steal focus or scroll; only user navigation should move them.
   useEffect(() => {
     if (!navigated.current) return;
     navigated.current = false;

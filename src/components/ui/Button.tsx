@@ -2,7 +2,7 @@ import Link from "next/link";
 import type { ComponentProps, ReactNode } from "react";
 import { cn } from "@/lib/cn";
 
-type Variant = "primary" | "light" | "ghost";
+type Variant = "primary" | "light" | "ghost" | "text" | "textSuccess";
 type Size = "md" | "sm";
 
 const base =
@@ -13,17 +13,21 @@ const variants: Record<Variant, string> = {
   light:
     "bg-white/14 text-white shadow-[inset_0_0_0_1.5px_rgb(255_255_255/.5)] backdrop-blur-sm hover:bg-white hover:text-charcoal",
   ghost: "px-3 text-muted hover:text-charcoal",
+  text: "px-0 text-charcoal hover:text-charcoal",
+  textSuccess: "px-0 text-green-700 hover:text-green-700",
 };
 
 const sizes: Record<Size, string> = {
-  md: "h-13 px-6.5 text-[15px]",
-  sm: "h-10.5 px-4.5 text-sm",
+  md: "h-13 text-[15px]",
+  sm: "h-10.5 text-sm",
 };
+
+const filledPadding: Record<Size, string> = { md: "px-6.5", sm: "px-4.5" };
 
 type StyleProps = { variant?: Variant; size?: Size; arrow?: boolean; children: ReactNode };
 
 export function buttonClasses({ variant = "primary", size = "md" }: Omit<StyleProps, "children">) {
-  return cn(base, sizes[size], variants[variant]);
+  return cn(base, sizes[size], (variant === "primary" || variant === "light") && filledPadding[size], variants[variant]);
 }
 
 function Content({ arrow, children }: Pick<StyleProps, "arrow" | "children">) {

@@ -1,7 +1,7 @@
 import { describe, expect, it } from "vitest";
 import { whatsappUrl } from "@/lib/whatsapp";
 import { legacyOrder } from "./__fixtures__/legacy";
-import { quickOrderMessage, type QuickOrder } from "./order";
+import { emptyQuickOrder, quickOrderMessage, quickOrderWhatsappUrl, type QuickOrder } from "./order";
 
 const OLD = { formula: { dog: 5000, cat: 5500 }, supplements: { caldo: 2300, curcuma: 3000, calcio: 1100 } };
 const LEGACY = { PRECIO_FORMULA_PERROS: 5000, PRECIO_FORMULA_GATOS: 5500, PRECIO_CALCIO: 1100, PRECIO_CALDO: 2300, PRECIO_CURCUMA: 3000 };
@@ -33,5 +33,19 @@ describe("quick order matches the old /hacer-pedido", () => {
     expect(quickOrderMessage({ dogBags: "2", catBags: "", caldoPots: "", calcioPots: "", curcumaPots: "" }, "Ana")).toContain(
       "*PRECIO TOTAL: a consultar*",
     );
+  });
+});
+
+describe("quick order send validation", () => {
+  const order = { ...emptyQuickOrder, dogBags: "1" };
+
+  it("does not build an actionable URL for an empty order or a blank name", () => {
+    expect(quickOrderWhatsappUrl(emptyQuickOrder, "Ana")).toBeNull();
+    expect(quickOrderWhatsappUrl({ ...emptyQuickOrder, caldoPots: "0" }, "Ana")).toBeNull();
+    expect(quickOrderWhatsappUrl(order, " \t ")).toBeNull();
+  });
+
+  it("opens the unchanged valid message with a trimmed name", () => {
+    expect(quickOrderWhatsappUrl(order, " Ana ")).toBe(whatsappUrl(quickOrderMessage(order, "Ana")));
   });
 });

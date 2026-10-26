@@ -2,7 +2,6 @@ import Image, { type StaticImageData } from "next/image";
 import type { ReactNode } from "react";
 import { Reveal } from "@/components/ui/Reveal";
 
-/** Closing block: photo with dark overlay, centered title, optional text and actions. */
 export function CtaPhoto({
   image,
   title,

@@ -1,4 +1,5 @@
-import { orderPrice, type OrderTotals, type PriceList } from "@/features/ration";
+import { isEmptyOrder, orderPrice, type OrderTotals, type PriceList } from "@/features/ration";
+import { whatsappUrl } from "@/lib/whatsapp";
 
 /** Quantities typed in /hacer-pedido. Raw input strings; empty = 0. */
 export type QuickOrder = {
@@ -23,7 +24,10 @@ export function quickOrderTotals(order: QuickOrder): OrderTotals {
   };
 }
 
-export const isEmptyOrder = (t: OrderTotals) => Object.values(t).every((n) => n === 0);
+export function quickOrderWhatsappUrl(order: QuickOrder, customerName: string): string | null {
+  if (!customerName.trim() || isEmptyOrder(quickOrderTotals(order))) return null;
+  return whatsappUrl(quickOrderMessage(order, customerName.trim()));
+}
 
 /** WhatsApp text for a repeat order. Same format as the old /hacer-pedido (checked by golden tests). */
 export function quickOrderMessage(order: QuickOrder, customerName: string, prices?: PriceList): string {

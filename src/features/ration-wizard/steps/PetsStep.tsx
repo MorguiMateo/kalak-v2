@@ -1,4 +1,5 @@
 import { Button } from "@/components/ui/Button";
+import { surfaceClasses } from "@/components/ui/Card";
 import { QuestionGroup } from "../ui/Question";
 import { petLabel, type StepProps } from "./types";
 
@@ -9,7 +10,7 @@ export function PetsStep({ state, dispatch }: StepProps) {
         {state.pets.map((pet, i) => (
           <li
             key={pet.id}
-            className="flex items-center justify-between gap-4 rounded-tile bg-white py-3 pr-3 pl-5 shadow-[inset_0_0_0_1.5px_var(--color-line)]"
+            className={surfaceClasses({ variant: "outlined" }) + " flex items-center justify-between gap-4 py-3 pr-3 pl-5"}
           >
             <span>
               <span className="font-display text-xl font-semibold">Mascota {i + 1}</span>
@@ -32,7 +33,7 @@ export function PetsStep({ state, dispatch }: StepProps) {
           </li>
         ))}
       </ul>
-      <Button variant="ghost" className="mt-4 px-0 text-green-700 hover:text-green-700" onClick={() => dispatch({ type: "addPet" })}>
+      <Button variant="textSuccess" className="mt-4" onClick={() => dispatch({ type: "addPet" })}>
         + Agregar otra mascota
       </Button>
     </QuestionGroup>

@@ -1,22 +1,25 @@
+import { surfaceClasses } from "@/components/ui/Card";
 import { Reveal } from "@/components/ui/Reveal";
 import { cn } from "@/lib/cn";
 
 type Feature = { title: string; text: string };
+const columnClasses = { 2: "lg:grid-cols-2", 3: "lg:grid-cols-3", 4: "lg:grid-cols-4" } as const;
 
-/** Cards with a short title and text. `numbered` adds 1, 2, 3… */
 export function FeatureGrid({
   items,
   numbered,
+  columns = 3,
   className,
 }: {
   items: readonly Feature[];
   numbered?: boolean;
+  columns?: 2 | 3 | 4;
   className?: string;
 }) {
   return (
-    <ul className={cn("grid gap-gap sm:grid-cols-2 lg:grid-cols-3", className)}>
+    <ul className={cn("grid gap-gap sm:grid-cols-2", columnClasses[columns], className)}>
       {items.map((item, i) => (
-        <Reveal as="li" key={item.title} index={i % 3} className="rounded-tile bg-white p-6 shadow-[inset_0_0_0_1.5px_var(--color-line)]">
+        <Reveal as="li" key={item.title} index={i % columns} className={cn(surfaceClasses({ variant: "outlined" }), "p-6")}>
           {numbered && (
             <span className="mb-4 grid size-10 place-items-center rounded-full bg-orange font-semibold text-ink">{i + 1}</span>
           )}

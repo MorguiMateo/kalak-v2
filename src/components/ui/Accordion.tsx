@@ -5,7 +5,6 @@ import type { ReactNode } from "react";
 
 type Item = { id: string; title: ReactNode; content: ReactNode };
 
-/** One item open at a time; the + icon turns into ×. Height animates with grid rows. */
 export function Accordion({ items, defaultOpen }: { items: Item[]; defaultOpen?: string }) {
   return (
     <RadixAccordion.Root type="single" collapsible defaultValue={defaultOpen}>
@@ -23,6 +22,7 @@ export function Accordion({ items, defaultOpen }: { items: Item[]; defaultOpen?:
             </h3>
           </RadixAccordion.Header>
           <RadixAccordion.Content
+            // Keep content mounted so the closing transition can finish before it is hidden.
             forceMount
             className="grid grid-rows-[0fr] transition-[grid-template-rows] duration-300 data-[state=open]:grid-rows-[1fr] data-[state=closed]:invisible data-[state=closed]:[transition:grid-template-rows_300ms,visibility_0s_300ms]"
           >

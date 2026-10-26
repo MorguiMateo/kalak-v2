@@ -1,18 +1,18 @@
 "use client";
 
 import { useRouter } from "next/navigation";
-import { useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { WhatsAppIcon } from "@/components/brand/WhatsAppIcon";
-import { Button, buttonClasses } from "@/components/ui/Button";
+import { Button } from "@/components/ui/Button";
+import { surfaceClasses } from "@/components/ui/Card";
+import { ChoicePills } from "@/components/ui/ChoicePills";
+import { inputClass } from "@/components/ui/input";
+import { Progress } from "@/components/ui/Progress";
 import { formatPrice, prices } from "@/config/prices";
 import { ctaLinks } from "@/config/site";
-import { orderPrice } from "@/features/ration";
-import { ChoicePills } from "@/features/ration-wizard/ui/ChoicePills";
-import { inputClass } from "@/features/ration-wizard/ui/input";
-import { Progress } from "@/features/ration-wizard/ui/Progress";
+import { isEmptyOrder, orderPrice } from "@/features/ration";
 import { cn } from "@/lib/cn";
-import { whatsappUrl } from "@/lib/whatsapp";
-import { emptyQuickOrder, isEmptyOrder, quickOrderMessage, quickOrderTotals, type QuickOrder } from "./order";
+import { emptyQuickOrder, quickOrderWhatsappUrl, quickOrderTotals, type QuickOrder } from "./order";
 
 const fields: { key: keyof QuickOrder; label: string; placeholder: string; unit: string; price: number }[] = [
   { key: "dogBags", label: "Bolsas fórmula perros", placeholder: "Cantidad de bolsas", unit: "kg", price: prices.formula.dog },
@@ -30,28 +30,48 @@ export function OrderForm() {
   const [orderedBefore, setOrderedBefore] = useState<boolean | null>(null);
   const [order, setOrder] = useState<QuickOrder>(emptyQuickOrder);
   const [name, setName] = useState("");
+  const stepContent = useRef<HTMLDivElement>(null);
+  const previousStep = useRef(step);
+
+  useEffect(() => {
+    if (previousStep.current === step) return;
+    previousStep.current = step;
+    const content = stepContent.current;
+    content?.focus({ preventScroll: true });
+    const top = content?.getBoundingClientRect().top;
+    if (content && top !== undefined && (top < 0 || top >= window.innerHeight)) {
+      content.scrollIntoView({ block: "start" });
+    }
+  }, [step]);
 
   const totals = quickOrderTotals(order);
   const price = orderPrice(totals);
+  const canSend = Boolean(name.trim()) && !isEmptyOrder(totals);
   const lineAmount = (key: keyof QuickOrder) =>
     ({ dogBags: price.dogFormula, catBags: price.catFormula, caldoPots: price.caldo, calcioPots: price.calcio, curcumaPots: price.curcuma })[key];
 
   function next() {
     if (step === 1) {
+      if (orderedBefore === null) return;
       if (orderedBefore === false) return router.push(ctaLinks.calculator.href);
       return setStep(2);
     }
-    setStep(3);
+    if (!isEmptyOrder(totals)) setStep(3);
+  }
+
+  function sendOrder() {
+    const href = quickOrderWhatsappUrl(order, name);
+    if (href) window.open(href, "_blank", "noopener,noreferrer");
   }
 
   return (
     <div className="mx-auto w-[min(100%-40px,var(--container-calc))] pt-7 pb-30">
       <Progress current={step} total={3} names={[]} />
 
-      <div key={step} className="mt-8 animate-step-in">
+      <div key={step} ref={stepContent} tabIndex={-1} role="group" aria-labelledby="quick-order-step-title" className="mt-8 animate-step-in">
         {step === 1 && (
           <fieldset>
-            <legend className={cn(title, "float-left w-full font-display font-semibold")}>¿Ha realizado un pedido antes?</legend>
+            <legend id="quick-order-step-title" className={cn(title, "float-left w-full font-display font-semibold")}>¿Ha realizado un pedido antes?</legend>
             <p className="clear-both pt-2 pb-6 text-muted">Tu respuesta nos ayudará a brindarte un mejor servicio</p>
             <ChoicePills
               name="ordered-before"
@@ -70,7 +90,7 @@ export function OrderForm() {
 
         {step === 2 && (
           <div>
-            <h2 className={title}>Detalles de tu pedido</h2>
+            <h2 id="quick-order-step-title" className={title}>Detalles de tu pedido</h2>
             <p className="mt-2 text-muted">Por favor, indica las cantidades de cada producto que deseas</p>
             <div className="mt-6 grid gap-5 sm:grid-cols-2">
               {fields.map((f) => (
@@ -98,9 +118,9 @@ export function OrderForm() {
 
         {step === 3 && (
           <div>
-            <h2 className={title}>Resumen de tu pedido</h2>
+            <h2 id="quick-order-step-title" className={title}>Resumen de tu pedido</h2>
             <p className="mt-2 text-muted">Revisa el detalle de tu pedido antes de confirmar</p>
-            <section aria-labelledby="detail" className="mt-6 rounded-tile bg-white p-6 shadow-[inset_0_0_0_1.5px_var(--color-line)]">
+            <section aria-labelledby="detail" className={cn(surfaceClasses({ variant: "outlined" }), "mt-6 p-6")}>
               <h3 id="detail" className="text-2xl">
                 Detalle del pedido
               </h3>
@@ -109,7 +129,7 @@ export function OrderForm() {
               ) : (
                 <dl className="mt-4 divide-y divide-line">
                   {fields
-                    .filter((f) => quickOrderTotals(order)[f.key] > 0)
+                    .filter((f) => totals[f.key] > 0)
                     .map((f) => (
                       <div key={f.key} className="flex items-baseline justify-between gap-4 py-2.5">
                         <dt>
@@ -134,6 +154,7 @@ export function OrderForm() {
                 className={cn(inputClass, "mt-2")}
                 placeholder="Escribe tu nombre completo"
                 autoComplete="name"
+                required
                 value={name}
                 onChange={(e) => setName(e.target.value)}
               />
@@ -156,17 +177,10 @@ export function OrderForm() {
             Continuar
           </Button>
         ) : (
-          <a
-            href={whatsappUrl(quickOrderMessage(order, name.trim()))}
-            target="_blank"
-            rel="noopener noreferrer"
-            aria-disabled={!name.trim() || isEmptyOrder(totals)}
-            tabIndex={!name.trim() || isEmptyOrder(totals) ? -1 : undefined}
-            className={cn(buttonClasses({}), (!name.trim() || isEmptyOrder(totals)) && "pointer-events-none opacity-40")}
-          >
+          <Button disabled={!canSend} onClick={sendOrder}>
             <WhatsAppIcon size={20} />
             Hacer pedido
-          </a>
+          </Button>
         )}
       </div>
     </div>

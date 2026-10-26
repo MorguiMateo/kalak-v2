@@ -1,3 +1,4 @@
+import { breedsBySpecies } from "@/config/breeds";
 import {
   calcioIncluded,
   type Activity,
@@ -29,7 +30,7 @@ export type PetDraft = {
 };
 
 export type WizardState = {
-  /** Id of the current step (see steps.tsx). */
+  /** Id of the current step in the step registry. */
   step: string;
   /** +1 when moving forward, -1 when going back. Drives the step transition. */
   direction: 1 | -1;
@@ -105,11 +106,6 @@ export function parseCustomDays(input: string): number | null {
   if (!/^\d+$/.test(input.trim())) return null;
   const days = Number(input.trim());
   return days >= 1 && days <= CUSTOM_DAYS_MAX ? days : null;
-}
-
-/** Phone: digits, spaces and hyphens only (same rule as the old site). */
-export function sanitizePhone(input: string): string {
-  return input.replace(/[^0-9-\s]/g, "");
 }
 
 /** Digits are not allowed in names (same rule as the old site). */
@@ -188,21 +184,112 @@ export function toPet(draft: PetDraft): Pet | null {
 
 const STORAGE_KEY = "kalak:ration-wizard:v1";
 
-export function loadState(storage: Pick<Storage, "getItem">): WizardState | null {
+type StorageSource<T> = T | (() => T);
+
+const speciesChoices = { dog: true, cat: true } satisfies Record<Species, true>;
+const genderChoices = { male: true, female: true } satisfies Record<Gender, true>;
+const ageChoices = { "1-6 meses": true, "7-12 meses": true, "1-6 años": true, "+7 años (geronte)": true } satisfies Record<AgeGroup, true>;
+const bodyChoices = { delgado: true, normal: true, sobrepeso: true } satisfies Record<BodyCondition, true>;
+const activityChoices = { bajo: true, normal: true, alto: true } satisfies Record<Activity, true>;
+const dietChoices = { raw: true, cooked: true, mixed: true, supplements: true } satisfies Record<Diet, true>;
+const supplementChoices = { caldo: true, curcuma: true, calcio: true } satisfies Record<Supplement, true>;
+const durationChoices = { "1_week": true, "2_weeks": true, "1_month": true, custom: true } satisfies Record<DurationChoice, true>;
+
+function isRecord(value: unknown): value is Record<string, unknown> {
+  return typeof value === "object" && value !== null && !Array.isArray(value);
+}
+
+function isChoice<T extends string>(value: unknown, choices: Record<T, true>): value is T {
+  return typeof value === "string" && Object.hasOwn(choices, value);
+}
+
+function isNullableChoice<T extends string>(value: unknown, choices: Record<T, true>): value is T | null {
+  return value === null || isChoice(value, choices);
+}
+
+function isNullableBoolean(value: unknown): value is boolean | null {
+  return value === null || typeof value === "boolean";
+}
+
+function isPetDraft(value: unknown): value is PetDraft {
+  return isRecord(value)
+    && typeof value.id === "string" && value.id.trim() !== ""
+    && isNullableChoice(value.species, speciesChoices)
+    && isNullableChoice(value.gender, genderChoices)
+    && typeof value.name === "string"
+    && typeof value.breed === "string"
+    && isNullableChoice(value.age, ageChoices)
+    && isNullableBoolean(value.sterilized)
+    && typeof value.weight === "string"
+    && isNullableChoice(value.bodyCondition, bodyChoices)
+    && isNullableChoice(value.activity, activityChoices)
+    && isNullableChoice(value.diet, dietChoices)
+    && Array.isArray(value.supplements)
+    && value.supplements.every((item: unknown) => isChoice(item, supplementChoices));
+}
+
+/** Reject incompatible snapshots, but keep raw/incomplete form inputs for the user to finish. */
+function restoreState(value: unknown): WizardState | null {
+  if (!isRecord(value)
+    || typeof value.step !== "string"
+    || (value.direction !== 1 && value.direction !== -1)
+    || !isNullableBoolean(value.multiple)
+    || !Array.isArray(value.pets) || !value.pets.every(isPetDraft)
+    || !isNullableChoice(value.duration, durationChoices)
+    || typeof value.customDays !== "string"
+    || typeof value.customerName !== "string"
+    || typeof value.customerPhone !== "string"
+    || !isNullableBoolean(value.orderedBefore)
+    || typeof value.ready !== "boolean") return null;
+
+  const { pets, multiple } = value;
+  if ((multiple === null && pets.length !== 0)
+    || (multiple !== null && pets.length === 0)
+    || (multiple === false && pets.length !== 1)
+    || new Set(pets.map((pet) => pet.id)).size !== pets.length) return null;
+
+  return {
+    step: value.step,
+    direction: 1,
+    multiple,
+    pets: pets.map((pet) => {
+      const supplements = [...new Set(pet.supplements)];
+      const included = pet.diet !== null && calcioIncluded({ diet: pet.diet });
+      if (included && !supplements.includes("calcio")) supplements.push("calcio");
+      // Invalid breeds must return to the breed question instead of skipping it.
+      const breeds: readonly string[] = pet.species ? breedsBySpecies[pet.species] : [];
+      return {
+        ...pet,
+        breed: breeds.includes(pet.breed) ? pet.breed : "",
+        supplements: included ? supplements : supplements.filter((item) => item !== "calcio"),
+      };
+    }),
+    duration: value.duration,
+    customDays: value.customDays,
+    customerName: value.customerName,
+    customerPhone: value.customerPhone,
+    orderedBefore: value.orderedBefore,
+    ready: false,
+  };
+}
+
+/** A lazy source also protects access to the browser's potentially blocked storage getter. */
+export function loadState(storage: StorageSource<Pick<Storage, "getItem">>): WizardState | null {
   try {
-    const raw = storage.getItem(STORAGE_KEY);
+    const target = typeof storage === "function" ? storage() : storage;
+    const raw = target.getItem(STORAGE_KEY);
     if (!raw) return null;
-    const parsed = JSON.parse(raw) as Partial<WizardState>;
-    if (typeof parsed.step !== "string" || !Array.isArray(parsed.pets)) return null;
-    return { ...initialState(), ...parsed, direction: 1 };
+    const parsed: unknown = JSON.parse(raw);
+    return restoreState(parsed);
   } catch {
     return null;
   }
 }
 
-export function saveState(storage: Pick<Storage, "setItem">, state: WizardState) {
+export function saveState(storage: StorageSource<Pick<Storage, "setItem">>, state: WizardState) {
   try {
-    storage.setItem(STORAGE_KEY, JSON.stringify(state));
+    const target = typeof storage === "function" ? storage() : storage;
+    target.setItem(STORAGE_KEY, JSON.stringify(state));
   } catch {
     // Storage full or disabled: progress just isn't kept.
   }

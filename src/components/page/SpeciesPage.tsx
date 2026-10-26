@@ -11,7 +11,6 @@ import { FeatureGrid } from "./FeatureGrid";
 import { Highlight } from "./Highlight";
 import { IngredientCards } from "./IngredientCards";
 
-/** Shared layout of /perros and /gatos. */
 export function SpeciesPage({ content: c, highlight }: { content: SpeciesContent; highlight: string }) {
   return (
     <>

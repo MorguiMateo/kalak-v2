@@ -1,5 +1,5 @@
 import type { AgeGroup } from "@/features/ration";
-import { ChoicePills } from "../ui/ChoicePills";
+import { ChoicePills } from "@/components/ui/ChoicePills";
 import { PetStack, QuestionGroup } from "../ui/Question";
 import { petLabel, type StepProps } from "./types";
 

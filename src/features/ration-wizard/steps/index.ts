@@ -1,4 +1,5 @@
 import { parseCustomDays, parseWeight } from "../state";
+import { isValidPhone } from "@/lib/phone";
 import { ActivityStep } from "./ActivityStep";
 import { AgeStep } from "./AgeStep";
 import { BodyStep } from "./BodyStep";
@@ -37,7 +38,7 @@ export const steps: readonly StepDef[] = [
   { id: "supplements", complete: () => true, Component: SupplementsStep },
   {
     id: "contact",
-    complete: (s) => s.customerName.trim() !== "" && s.customerPhone.replace(/\D/g, "").length >= 6,
+    complete: (s) => s.customerName.trim() !== "" && isValidPhone(s.customerPhone),
     Component: ContactStep,
   },
   { id: "summary", complete: () => true, Component: SummaryStep },

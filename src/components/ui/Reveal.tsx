@@ -28,16 +28,19 @@ function getObserver() {
   return observer;
 }
 
-/** Animates its child into view once, the first time it enters the viewport. */
 export function Reveal({ as: Tag = "div", variant = "up", index = 0, className, children }: RevealProps) {
   const ref = useRef<HTMLElement>(null);
 
   useEffect(() => {
     const el = ref.current;
-    if (!el) return;
+    if (!el || !("IntersectionObserver" in window)) return;
     const io = getObserver();
     io.observe(el);
-    return () => io.unobserve(el);
+    el.setAttribute("data-reveal-ready", "");
+    return () => {
+      io.unobserve(el);
+      el.removeAttribute("data-reveal-ready");
+    };
   }, []);
 
   return (

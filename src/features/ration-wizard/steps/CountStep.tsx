@@ -1,4 +1,4 @@
-import { ChoicePills } from "../ui/ChoicePills";
+import { ChoicePills } from "@/components/ui/ChoicePills";
 import { QuestionGroup } from "../ui/Question";
 import type { StepProps } from "./types";
 

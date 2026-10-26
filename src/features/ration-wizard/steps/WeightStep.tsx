@@ -1,5 +1,5 @@
 import { parseWeight, WEIGHT_MAX, WEIGHT_MIN } from "../state";
-import { inputClass } from "../ui/input";
+import { inputClass } from "@/components/ui/input";
 import { PetStack, QuestionField } from "../ui/Question";
 import { petLabel, type StepProps } from "./types";
 

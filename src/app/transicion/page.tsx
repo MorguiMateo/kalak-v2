@@ -5,6 +5,7 @@ import { FinalCta } from "@/components/home/FinalCta";
 import { Badges } from "@/components/page/Badges";
 import { FeatureGrid } from "@/components/page/FeatureGrid";
 import { Highlight } from "@/components/page/Highlight";
+import { surfaceClasses } from "@/components/ui/Card";
 import { PhotoBanner } from "@/components/ui/PhotoBanner";
 import { Reveal } from "@/components/ui/Reveal";
 import { Section } from "@/components/ui/Section";
@@ -16,7 +17,7 @@ export const metadata: Metadata = {
   description: "Cómo hacer la transición a la dieta natural Kalak paso a paso, sin problemas digestivos.",
 };
 
-const card = "rounded-tile bg-white p-6 shadow-[inset_0_0_0_1.5px_var(--color-line)] lg:p-8";
+const card = surfaceClasses({ variant: "outlined" }) + " p-6 lg:p-8";
 
 export default function TransicionPage() {
   return (
@@ -38,7 +39,7 @@ export default function TransicionPage() {
       <Section eyebrow={c.how.eyebrow} title={c.how.title} intro={c.how.text}>
         <ul className="grid gap-gap md:grid-cols-3">
           {c.how.images.map((img, i) => (
-            <Reveal as="li" key={img.image} variant="zoom" index={i} className="overflow-hidden rounded-tile bg-white shadow-[inset_0_0_0_1.5px_var(--color-line)]">
+            <Reveal as="li" key={img.image} variant="zoom" index={i} className={surfaceClasses({ variant: "outlined" }) + " overflow-hidden"}>
               <Image src={images[img.image]} alt={img.alt} sizes="(max-width: 768px) 100vw, 400px" className="h-auto w-full" />
             </Reveal>
           ))}

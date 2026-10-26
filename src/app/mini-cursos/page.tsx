@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 import { Guarda } from "@/components/brand/Guarda";
 import { FeatureGrid } from "@/components/page/FeatureGrid";
 import { Highlight } from "@/components/page/Highlight";
+import { surfaceClasses } from "@/components/ui/Card";
 import { buttonClasses } from "@/components/ui/Button";
 import { PhotoBanner } from "@/components/ui/PhotoBanner";
 import { Reveal } from "@/components/ui/Reveal";
@@ -28,7 +29,7 @@ export default function MiniCursosPage() {
       <Section>
         <ul className="grid gap-gap md:grid-cols-3">
           {c.courses.map((course, i) => (
-            <Reveal as="li" key={course.title} index={i} className="flex flex-col rounded-tile bg-white p-6 shadow-[inset_0_0_0_1.5px_var(--color-line)] lg:p-8">
+            <Reveal as="li" key={course.title} index={i} className={surfaceClasses({ variant: "outlined" }) + " flex flex-col p-6 lg:p-8"}>
               <p className="eyebrow text-muted">{course.meta}</p>
               <h2 className="mt-3 text-[28px]">{course.title}</h2>
               <p className="mt-3 flex-1 text-muted">{course.text}</p>
@@ -45,7 +46,7 @@ export default function MiniCursosPage() {
       </Section>
 
       <Section title={c.why.title}>
-        <FeatureGrid items={c.why.items} className="lg:grid-cols-4" />
+        <FeatureGrid items={c.why.items} columns={4} />
         <a href={whatsappUrl("Hola, quiero información sobre los mini cursos de Kalak.")} {...external} className={buttonClasses({}) + " mt-10"}>
           {c.allCta} →
         </a>

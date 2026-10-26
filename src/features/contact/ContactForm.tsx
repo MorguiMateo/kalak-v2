@@ -3,18 +3,14 @@
 import { useState, type FormEvent } from "react";
 import { WhatsAppIcon } from "@/components/brand/WhatsAppIcon";
 import { Button } from "@/components/ui/Button";
-import { inputClass } from "@/features/ration-wizard/ui/input";
-import { sanitizePhone } from "@/features/ration-wizard/state";
+import { inputClasses } from "@/components/ui/input";
 import { cn } from "@/lib/cn";
+import { sanitizePhone } from "@/lib/phone";
 import { whatsappUrl } from "@/lib/whatsapp";
 import { contactMessage, type ContactInput } from "./message";
 
 const empty: ContactInput = { name: "", email: "", phone: "", message: "" };
 
-/**
- * The old form only simulated sending. This one opens WhatsApp with the message ready to send,
- * so nothing gets lost.
- */
 export function ContactForm() {
   const [form, setForm] = useState(empty);
   const set = (key: keyof ContactInput) => (e: { target: { value: string } }) =>
@@ -32,19 +28,19 @@ export function ContactForm() {
         <label htmlFor="name" className={label}>
           Nombre completo
         </label>
-        <input id="name" required autoComplete="name" placeholder="Tu nombre" className={cn(inputClass, "mt-2 max-w-none")} value={form.name} onChange={set("name")} />
+        <input id="name" required autoComplete="name" placeholder="Tu nombre" className={cn(inputClasses({ width: "full" }), "mt-2")} value={form.name} onChange={set("name")} />
       </div>
       <div>
         <label htmlFor="email" className={label}>
           Email
         </label>
-        <input id="email" type="email" required autoComplete="email" placeholder="tu@email.com" className={cn(inputClass, "mt-2 max-w-none")} value={form.email} onChange={set("email")} />
+        <input id="email" type="email" required autoComplete="email" placeholder="tu@email.com" className={cn(inputClasses({ width: "full" }), "mt-2")} value={form.email} onChange={set("email")} />
       </div>
       <div>
         <label htmlFor="phone" className={label}>
           Teléfono (opcional)
         </label>
-        <input id="phone" type="tel" autoComplete="tel" placeholder="Ej: 261-5555555" className={cn(inputClass, "mt-2 max-w-none")} value={form.phone} onChange={set("phone")} />
+        <input id="phone" type="tel" autoComplete="tel" placeholder="Ej: 261-5555555" className={cn(inputClasses({ width: "full" }), "mt-2")} value={form.phone} onChange={set("phone")} />
       </div>
       <div>
         <label htmlFor="message" className={label}>
@@ -55,7 +51,7 @@ export function ContactForm() {
           required
           rows={5}
           placeholder="Escribe tu mensaje aquí..."
-          className={cn(inputClass, "mt-2 h-auto max-w-none resize-y py-4")}
+          className={cn(inputClasses({ variant: "textarea", width: "full" }), "mt-2")}
           value={form.message}
           onChange={set("message")}
         />

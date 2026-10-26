@@ -1,8 +1,10 @@
-import { buttonClasses } from "@/components/ui/Button";
+import { Button } from "@/components/ui/Button";
+import { surfaceClasses } from "@/components/ui/Card";
 import { WhatsAppIcon } from "@/components/brand/WhatsAppIcon";
 import { formatPrice } from "@/config/prices";
 import {
   DIET_TEXT,
+  isEmptyOrder,
   orderMessage,
   orderPrice,
   orderTotals,
@@ -12,6 +14,7 @@ import {
   type PetOrder,
 } from "@/features/ration";
 import { cn } from "@/lib/cn";
+import { isValidPhone } from "@/lib/phone";
 import { whatsappUrl } from "@/lib/whatsapp";
 import { toPet } from "../state";
 import type { StepProps } from "./types";
@@ -30,7 +33,17 @@ export function SummaryStep({ state, dispatch }: StepProps) {
   const totals = orderTotals(orders);
   const price = orderPrice(totals);
   const customer = { name: state.customerName.trim(), phone: state.customerPhone.trim() };
-  const href = whatsappUrl(orderMessage({ pets, duration: state.duration, customDays: state.customDays, customer }));
+  const emptyOrder = isEmptyOrder(totals);
+  const validContact = Boolean(customer.name) && isValidPhone(customer.phone);
+
+  function sendOrder() {
+    if (isEmptyOrder(totals) || !customer.name || !isValidPhone(customer.phone)) return;
+    window.open(
+      whatsappUrl(orderMessage({ pets, duration: state.duration, customDays: state.customDays, customer })),
+      "_blank",
+      "noopener,noreferrer",
+    );
+  }
 
   const lines = [
     { label: "Fórmula perros", qty: totals.dogBags, unit: "kg", amount: price.dogFormula },
@@ -53,43 +66,50 @@ export function SummaryStep({ state, dispatch }: StepProps) {
         ))}
       </div>
 
-      <section aria-labelledby="order-detail" className="mt-gap rounded-tile bg-white p-6 shadow-[inset_0_0_0_1.5px_var(--color-line)]">
+      <section aria-labelledby="order-detail" className={cn(surfaceClasses({ variant: "outlined" }), "mt-gap p-6")}>
         <h3 id="order-detail" className="text-2xl">
           Detalle del pedido
         </h3>
-        <dl className="mt-4 divide-y divide-line">
-          {lines.map((line) => (
-            <div key={line.label} className="flex items-baseline justify-between gap-4 py-2.5">
-              <dt>
-                {line.label}: <span className="font-semibold text-green-700">{line.qty} {line.unit}</span>
-              </dt>
-              <dd className="tabular-nums">{price.complete ? formatPrice(line.amount) : "Consultar"}</dd>
+        {emptyOrder ? (
+          <p id="empty-order-help" className="mt-4 text-muted">
+            Tu selección no incluye productos para pedir. Vuelve al paso Suplementos y agrega caldo o cúrcuma, o cambia la dieta para incluir fórmula Kalak.
+          </p>
+        ) : (
+          <dl className="mt-4 divide-y divide-line">
+            {lines.map((line) => (
+              <div key={line.label} className="flex items-baseline justify-between gap-4 py-2.5">
+                <dt>
+                  {line.label}: <span className="font-semibold text-green-700">{line.qty} {line.unit}</span>
+                </dt>
+                <dd className="tabular-nums">{price.complete ? formatPrice(line.amount) : "Consultar"}</dd>
+              </div>
+            ))}
+            <div className="flex items-baseline justify-between gap-4 pt-4 text-lg font-semibold">
+              <dt>PRECIO TOTAL:</dt>
+              <dd className="tabular-nums text-green-700">{price.complete ? formatPrice(price.total) : "A consultar"}</dd>
             </div>
-          ))}
-          <div className="flex items-baseline justify-between gap-4 pt-4 text-lg font-semibold">
-            <dt>PRECIO TOTAL:</dt>
-            <dd className="tabular-nums text-green-700">{price.complete ? formatPrice(price.total) : "A consultar"}</dd>
-          </div>
-        </dl>
-        {!price.complete && (
+          </dl>
+        )}
+        {!emptyOrder && !price.complete && (
           <p className="mt-3 text-sm text-muted">Te confirmamos el precio por WhatsApp al recibir el pedido.</p>
         )}
       </section>
 
       <div className="mt-8 flex flex-wrap items-center gap-3">
-        <a href={href} target="_blank" rel="noopener noreferrer" className={cn(buttonClasses({}), "max-sm:w-full")}>
+        <Button disabled={emptyOrder || !validContact} aria-describedby={emptyOrder ? "empty-order-help" : undefined} onClick={sendOrder} className="max-sm:w-full">
           <WhatsAppIcon size={20} />
           Hacer pedido
-        </a>
-        <button
-          type="button"
-          className={cn(buttonClasses({ variant: "ghost" }), "max-sm:w-full")}
+        </Button>
+        <Button
+          variant="ghost"
+          className="max-sm:w-full"
           onClick={() => dispatch({ type: "goTo", step: "contact", direction: -1 })}
         >
           Editar datos de contacto
-        </button>
+        </Button>
       </div>
-      <p className="mt-3 text-sm text-muted">Se abre WhatsApp con el pedido listo para enviar.</p>
+      {!validContact && <p className="mt-3 text-sm text-muted">Completa tu nombre y un teléfono válido en Editar datos de contacto para hacer el pedido.</p>}
+      {!emptyOrder && validContact && <p className="mt-3 text-sm text-muted">Se abre WhatsApp con el pedido listo para enviar.</p>}
     </div>
   );
 }
@@ -97,7 +117,7 @@ export function SummaryStep({ state, dispatch }: StepProps) {
 function PetCard({ order, durationLabel }: { order: PetOrder; durationLabel: string }) {
   const { pet, dailyKalak, bags, caldo, curcuma, calcio } = order;
   return (
-    <article className="rounded-tile bg-white p-6 shadow-[inset_0_0_0_1.5px_var(--color-line)]">
+    <article className={cn(surfaceClasses({ variant: "outlined" }), "p-6")}>
       <h3 className="text-2xl">{pet.name}</h3>
       <p className="mt-1 text-sm text-muted">{DIET_TEXT[pet.diet]}</p>
       <ul className="mt-4 grid gap-1.5 text-[15px]">

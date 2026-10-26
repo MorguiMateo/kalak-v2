@@ -4,6 +4,7 @@ import { Guarda } from "@/components/brand/Guarda";
 import { CtaPhoto } from "@/components/page/CtaPhoto";
 import { FeatureGrid } from "@/components/page/FeatureGrid";
 import { Highlight } from "@/components/page/Highlight";
+import { surfaceClasses } from "@/components/ui/Card";
 import { Accordion } from "@/components/ui/Accordion";
 import { ButtonLink } from "@/components/ui/Button";
 import { PhotoBanner } from "@/components/ui/PhotoBanner";
@@ -66,7 +67,7 @@ export default function DietaKalakPage() {
       <Section eyebrow={c.keyInfo.subtitle} title={c.keyInfo.title}>
         <div className="grid gap-gap lg:grid-cols-2">
           {c.keyInfo.items.map((item, i) => (
-            <Reveal key={item.title} index={i} className="rounded-tile bg-white p-6 shadow-[inset_0_0_0_1.5px_var(--color-line)] lg:p-8">
+            <Reveal key={item.title} index={i} className={surfaceClasses({ variant: "outlined" }) + " p-6 lg:p-8"}>
               <h3 className="text-2xl">{item.title}</h3>
               <div className="mt-4 grid gap-3 text-muted">
                 {"paragraphs" in item && item.paragraphs.map((p) => <p key={p.slice(0, 20)}>{p}</p>)}
@@ -106,7 +107,7 @@ export default function DietaKalakPage() {
         <p className="mt-2 text-muted">{natural.subtitle}</p>
         <div className="mt-6 grid gap-gap lg:grid-cols-2">
           {natural.items.map((option, i) => (
-            <Reveal key={option.title} index={i} className="rounded-tile bg-white p-6 shadow-[inset_0_0_0_1.5px_var(--color-line)] lg:p-8">
+            <Reveal key={option.title} index={i} className={surfaceClasses({ variant: "outlined" }) + " p-6 lg:p-8"}>
               <h4 className="font-display text-2xl font-semibold">{option.title}</h4>
               <p className="mt-3 text-muted">{option.text}</p>
               <div className="mt-4">
@@ -129,8 +130,8 @@ export default function DietaKalakPage() {
 
         <h3 className="mt-16 text-[clamp(26px,3vw,36px)]">{commercial.title}</h3>
         <p className="mt-2 text-muted">{commercial.subtitle}</p>
-        <FeatureGrid items={commercial.facts} className="mt-6 lg:grid-cols-2" />
-        <FeatureGrid items={commercial.supplements} className="mt-gap lg:grid-cols-4" />
+        <FeatureGrid items={commercial.facts} columns={2} className="mt-6" />
+        <FeatureGrid items={commercial.supplements} columns={4} className="mt-gap" />
         <FeatureGrid items={commercial.steps} numbered className="mt-gap" />
       </Section>
 

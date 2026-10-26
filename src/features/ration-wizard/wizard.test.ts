@@ -1,4 +1,5 @@
 import { describe, expect, it } from "vitest";
+import { isValidPhone, PHONE_MIN_DIGITS, sanitizePhone } from "@/lib/phone";
 import { currentStep, firstReachableStep, visibleSteps } from "./navigation";
 import { initialState, loadState, parseWeight, sanitizeName, toPet, wizardReducer, type WizardAction, type WizardState } from "./state";
 
@@ -18,6 +19,14 @@ describe("parseWeight", () => {
 
 it("names cannot contain digits", () => {
   expect(sanitizeName("Olga2")).toBe("Olga");
+});
+
+it("shares phone sanitization and a minimum digit count independent of formatting", () => {
+  expect(sanitizePhone("+54 (261) 555-5555 ext.")).toBe("54 261 555-5555 ");
+  expect(PHONE_MIN_DIGITS).toBe(6);
+  expect(isValidPhone("26-1 55-5")).toBe(true);
+  expect(isValidPhone("26 - 155 --- ")).toBe(false);
+  expect(isValidPhone("")).toBe(false);
 });
 
 describe("flow", () => {

@@ -119,7 +119,7 @@
   background: url("/images/guardabeige.webp") repeat-x left center / auto 100%;
 }
 
-/* Reveal on scroll: see components/ui/Reveal.tsx. Content stays visible without JS. */
+/* Hide only after the observer is installed, so failed hydration leaves SSR content readable. */
 @layer components {
   [data-reveal] {
     transition:
@@ -127,15 +127,13 @@
       transform 800ms var(--ease-brand);
     transition-delay: calc(var(--i, 0) * 90ms);
   }
-  @media (scripting: enabled) {
-    [data-reveal="up"]:not([data-shown]) {
-      opacity: 0;
-      transform: translateY(28px);
-    }
-    [data-reveal="zoom"]:not([data-shown]) {
-      opacity: 0;
-      transform: scale(0.96);
-    }
+  [data-reveal="up"][data-reveal-ready]:not([data-shown]) {
+    opacity: 0;
+    transform: translateY(28px);
+  }
+  [data-reveal="zoom"][data-reveal-ready]:not([data-shown]) {
+    opacity: 0;
+    transform: scale(0.96);
   }
 }
 

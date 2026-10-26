@@ -12,13 +12,11 @@ const widths: Record<Width, string> = {
 type SectionProps = Omit<ComponentProps<"section">, "title"> & {
   /** `bleed` spans the viewport with the 8px gap as side margin. */
   width?: Width;
-  /** Small uppercase label above the title. */
   eyebrow?: string;
   title?: ReactNode;
   intro?: ReactNode;
 };
 
-/** Vertical rhythm: 96px between sections (64px on mobile). */
 export function Section({
   width = "site",
   eyebrow,

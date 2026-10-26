@@ -1,6 +1,5 @@
 "use client";
 
-/** Previous/next buttons for a horizontal scroll-snap track (desktop only). */
 export function CarouselArrows({ trackId }: { trackId: string }) {
   function scroll(direction: 1 | -1) {
     const track = document.getElementById(trackId);

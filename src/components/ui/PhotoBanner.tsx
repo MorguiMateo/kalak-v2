@@ -3,7 +3,6 @@ import type { ReactNode } from "react";
 
 type Props = { image: StaticImageData; eyebrow?: string; title: ReactNode; children?: ReactNode };
 
-/** Photo header for inner pages: 340px (240px on mobile) with a dark gradient and white title. */
 export function PhotoBanner({ image, eyebrow, title, children }: Props) {
   return (
     <div className="on-dark relative mt-19 flex min-h-60 items-end overflow-hidden py-8 text-white lg:min-h-85">
